@@ -1,0 +1,53 @@
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-signin input[type="text"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-registration input {
+    border-radius: 0;
+    margin-top: -1px;
+}
+
+.form-registration .form-floating:focus-within {
+    z-index: 2;
+}
+
+.login {
+    min-height: 80vh;
+    position: relative;
+}
+
+.credentials {
+    position: absolute;
+    top: 0.7em;
+    right: 1.5em;
+    font-size: 1.1em;
+}
+
+.credentials a:hover {
+    text-decoration: underline;
+}
+
+.modal-body ul {
+    list-style-type: disc;
+}
+
+.footer p {
+    text-align: justify;
+}
+
+.btn-excel,
+.btn-pdf {
+    border-left: 0;
+}
