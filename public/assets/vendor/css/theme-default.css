@@ -135,8 +135,8 @@ a.bg-primary:focus {
 .pagination li.active > a:not(.page-link),
 .pagination li.active > a:not(.page-link):hover,
 .pagination li.active > a:not(.page-link):focus {
-    border-color: #696cff;
-    background-color: #696cff;
+    border-color: #2e2d2d;
+    background-color: #2e2d2d;
     color: #fff;
     box-shadow: 0 0.125rem 0.25rem rgba(105, 108, 255, 0.4);
 }

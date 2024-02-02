@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid('uuid');
             $table->string('outlet_name', 100);
             $table->string('outlet_code');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

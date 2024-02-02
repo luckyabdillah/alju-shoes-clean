@@ -14,9 +14,11 @@ return new class extends Migration
         Schema::create('galleries', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
+            $table->string('name', 100);
             $table->string('img');
             $table->string('alt', 100)->nullable();
             $table->string('description');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }

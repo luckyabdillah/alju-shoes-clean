@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\GalleryController;
+use App\Http\Controllers\OutletController;
+use App\Http\Controllers\TransactionDropzoneController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('index');
+    return view('welcome');
 });
 
 
@@ -38,19 +43,31 @@ Route::get('/', function () {
 // Untuk role kurir, hanya bisa mengakses menu transaction pending yang tipe transaksinya pickup & delivery
 
 Route::get('/login', function() {
-    return view('login.index');
+    return view('dashboard.login.index');
 });
 
 // Main Dashborad
+Route::get('/dashboard', [DashboardController::class, 'index']);
 
 // CMS CAMPAIGN (CRUD)
+Route::resource('/dashboard/master-data/campaign', CampaignController::class);
+Route::put('/dashboard/master-data/campaign/{campaign}/status-update', [CampaignController::class, 'statusUpdate']);
 
 // CMS GALLERY (CRUD)
+Route::resource('/dashboard/master-data/gallery', GalleryController::class);
+Route::put('/dashboard/master-data/gallery/{gallery}/status-update', [GalleryController::class, 'statusUpdate']);
+
+// CMS OUTLET (CRUD)
+Route::resource('/dashboard/master-data/outlet', OutletController::class);
+Route::put('/dashboard/master-data/outlet/{outlet}/status-update', [OutletController::class, 'statusUpdate']);
 
 // TRANSACTION PENDING
 // -> edit status pembayaran (paid:unpaid)
 // -> edit status transaksi (pending -> on_progress -> done)
 // -> tombol cetak label (no invoice)
+Route::get('/dashboard/transaction/dropzone', [TransactionDropzoneController::class, 'index']);
+Route::put('/dashboard/transaction/dropzone/{transaction}/payment-update', [TransactionDropzoneController::class, 'paymentUpdate']);
+Route::put('/dashboard/transaction/dropzone/{transaction}/status-update', [TransactionDropzoneController::class, 'statusUpdate']);
 
 // TRANSACTION PENDING -> type: Pickup & Delivery
 // -> redirect link ke google maps berdasarkan koordinat customer

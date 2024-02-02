@@ -2182,7 +2182,7 @@ progress {
 }
 .form-label {
     margin-bottom: 0.5rem;
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     font-weight: 500;
     color: #566a7f;
 }
@@ -2219,9 +2219,9 @@ progress {
     display: block;
     width: 100%;
     padding: 0.4375rem 0.875rem;
-    font-size: 0.9375rem;
+    font-size: 0.975rem;
     font-weight: 400;
-    line-height: 1.53;
+    line-height: 1.85;
     color: #697a8d;
     background-color: #fff;
     background-clip: padding-box;
@@ -4272,6 +4272,12 @@ fieldset:disabled .btn {
     vertical-align: baseline;
     border-radius: 0.25rem;
 }
+
+.my-badge {
+    text-transform: lowercase !important;
+    border-radius: 0.85rem;
+}
+
 .badge:empty {
     display: none;
 }
@@ -7790,12 +7796,13 @@ button:focus {
 }
 
 .alert-success {
-    background-color: #e8fadf;
+    /* background-color: #e8fadf; */
+    background-color: #2adf19;
     border-color: #d4f5c3;
     color: #71dd37;
 }
 .alert-success .btn-close {
-    background-image: url("data:image/svg+xml,%3Csvg width='150px' height='151px' viewBox='0 0 150 151' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Cpolygon id='path-1' points='131.251657 0 74.9933705 56.25 18.7483426 0 0 18.75 56.2450278 75 0 131.25 18.7483426 150 74.9933705 93.75 131.251657 150 150 131.25 93.7549722 75 150 18.75'%3E%3C/polygon%3E%3C/defs%3E%3Cg id='🎨-%5BSetup%5D:-Colors-&amp;-Shadows' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='Artboard' transform='translate(-225.000000, -250.000000)'%3E%3Cg id='Icon-Color' transform='translate(225.000000, 250.500000)'%3E%3Cuse fill='%2371dd37' xlink:href='%23path-1'%3E%3C/use%3E%3Cuse fill-opacity='0.5' fill='%2371dd37' xlink:href='%23path-1'%3E%3C/use%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    /* background-image: url("data:image/svg+xml,%3Csvg width='150px' height='151px' viewBox='0 0 150 151' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Cdefs%3E%3Cpolygon id='path-1' points='131.251657 0 74.9933705 56.25 18.7483426 0 0 18.75 56.2450278 75 0 131.25 18.7483426 150 74.9933705 93.75 131.251657 150 150 131.25 93.7549722 75 150 18.75'%3E%3C/polygon%3E%3C/defs%3E%3Cg id='🎨-%5BSetup%5D:-Colors-&amp;-Shadows' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd'%3E%3Cg id='Artboard' transform='translate(-225.000000, -250.000000)'%3E%3Cg id='Icon-Color' transform='translate(225.000000, 250.500000)'%3E%3Cuse fill='%2371dd37' xlink:href='%23path-1'%3E%3C/use%3E%3Cuse fill-opacity='0.5' fill='%2371dd37' xlink:href='%23path-1'%3E%3C/use%3E%3C/g%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); */
 }
 .alert-success .alert-link {
     color: #71dd37;
@@ -7920,7 +7927,7 @@ button:focus {
 
 .form-label,
 .col-form-label {
-    font-size: 0.75rem;
+    font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: inherit;
 }

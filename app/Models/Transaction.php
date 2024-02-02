@@ -16,4 +16,12 @@ class Transaction extends Model
     public function detail_transactions() {
         return $this->hasMany(DetailTransaction::class);
     }
+
+    public function customer() {
+        return $this->belongsTo(Customer::class);
+    }
+
+    public function outlet() {
+        return $this->belongsTo(Outlet::class);
+    }
 }

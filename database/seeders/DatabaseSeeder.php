@@ -31,30 +31,34 @@ class DatabaseSeeder extends Seeder
 
         Campaign::create([
             'uuid' => fake()->unique()->uuid(),
+            'name' => 'Campaign 1',
             'img' => 'asdasd.jpg',
-            'alt' => 'Campaign 1',
-            'description' => 'Campaign 1'
+            'alt' => 'Promo Bulan Juli 2024',
+            'description' => 'Promo Bulan Juli 2024'
         ]);
 
         Campaign::create([
             'uuid' => fake()->unique()->uuid(),
+            'name' => 'Campaign 2',
             'img' => 'qweqwe.jpg',
-            'alt' => 'Campaign 2',
-            'description' => 'Campaign 2'
+            'alt' => 'Promo Bulan Agustus 2024',
+            'description' => 'Promo Bulan Agustus 2024'
         ]);
 
         Gallery::create([
             'uuid' => fake()->unique()->uuid(),
+            'name' => 'Gallery 1',
             'img' => '123123.jpg',
-            'alt' => 'Gallery 1',
-            'description' => 'Gallery 1'
+            'alt' => 'Foto sepatu customer Nike Air',
+            'description' => 'Foto sepatu customer Nike Air'
         ]);
 
         Gallery::create([
             'uuid' => fake()->unique()->uuid(),
+            'name' => 'Gallery 2',
             'img' => '234234.jpg',
-            'alt' => 'Gallery 2',
-            'description' => 'Gallery 2'
+            'alt' => 'Foto tas customer',
+            'description' => 'Foto tas customer'
         ]);
 
         Outlet::create([
