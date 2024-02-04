@@ -51,13 +51,23 @@
                             </td>
                             <td>IDR {{ number_format($transaction->total_amount, 0, '.', ',') }}</td>
                             <td>
+                                @if ($transaction->transaction_status == 'on_progress')
+                                    <button
+                                        type="button"
+                                        class="border-0 bg-light btn-transaction-done"
+                                        data-uuid="{{ $transaction->uuid }}"
+                                    >
+                                        <i class="bx bxs-circle text-warning fs-4"></i>
+                                    </button>
+                                @else
                                 <form action="/dashboard/transaction/dropzone/{{ $transaction->uuid }}/status-update" method="post">
                                     @csrf
                                     @method('put')
                                     <button type="submit" class="border-0 btn-status bg-light">
-                                        <i class="bx bxs-circle text-{{ $transaction->transaction_status == 'pending' ? 'danger' : ($transaction->transaction_status == 'on_progress' ? 'warning' : 'dark') }} fs-4"></i>
+                                        <i class="bx bxs-circle text-{{ $transaction->transaction_status == 'pending' ? 'danger' : 'dark' }} fs-4"></i>
                                     </button>
                                 </form>
+                                @endif
                             </td>
                             <td>
                                 <a href="javascript:void(0)" class="btn btn-dark badge my-badge btn-print" data-invoice="{{ $transaction->invoice_no }}"><i class="bx bx-printer"></i></a>
@@ -174,6 +184,53 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="transactionDoneModal" tabindex="-1" aria-hidden="true" >
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-5" id="transactionDoneModalLabel">Proof of pickup</h2>
+                </div>
+                <div class="modal-body" style="font-size: 1.1em">
+                    <form method="post" enctype="multipart/form-data" id="transasctionDoneForm">
+                        @method('put')
+                        @csrf
+                        <input type="hidden" name="uuid" id="uuid" value="{{ old('uuid') }}">
+                        <div class="mb-3">
+                            <label for="picture_evidence" class="form-label">Upload Image</label>
+                            <input class="form-control @error('picture_evidence') is-invalid @enderror" type="file" id="picture_evidence" name="picture_evidence" required>
+                            @error('picture_evidence')
+                                <div class="invalid-feedback text-start">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-dark me-2">Submit</button>
+                            <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- @error('picture_evidence')
+        <p>oi, hehe.</p>
+        {{ $message }}
+    @enderror --}}
+
+    @error('picture_evidence')
+        @section('scripts')
+            <script>
+                window.onload = function() {
+                    let uuid = $('#uuid').val();
+                    $('#transasctionDoneForm').attr('action', `/dashboard/transaction/dropzone/${uuid}/status-update`);
+                    $('#transactionDoneModal').modal('show');
+                }
+            </script>
+        @endsection
+    @enderror
 
 </div>
 @endsection

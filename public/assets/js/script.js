@@ -167,6 +167,16 @@ $(document).on('click', '.btn-detail-pending', function(e) {
     $('#detailModal').modal('show');
 })
 
+$(document).on('click', '.btn-transaction-done', function(e) {
+    e.preventDefault();
+    let uuid = $(this).data('uuid');
+
+    $('#transasctionDoneForm').attr('action', `/dashboard/transaction/dropzone/${uuid}/status-update`);
+    $('#uuid').val(uuid);
+
+    $('#transactionDoneModal').modal('show');
+})
+
 $(document).on('click', '.btn-print', function(e) {
     e.preventDefault();
 

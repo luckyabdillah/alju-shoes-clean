@@ -108,6 +108,8 @@
         <script src="{{ asset('assets/js/bs5-lightbox.js') }}"></script>
         
         <script src="{{ asset('assets/js/script.js') }}"></script>
+
+        @yield('scripts')
         
         <!-- Place this tag in your head or just before your close body tag. -->
         <script async defer src="https://buttons.github.io/buttons.js"></script>
