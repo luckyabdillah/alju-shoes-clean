@@ -6,6 +6,7 @@ use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\TransactionDropzoneController;
+use App\Http\Controllers\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,6 +29,8 @@ Route::get('/', function () {
 
 // ORDER PAGE
 // -> Ada button untuk cek nomor terdaftar jika customer pernah bertransaksi sebelumnya sehingga tidak perlu lagi mengisi nama, alamat, dll pada form (Hit API, cek ke route api.php)
+Route::get('/order', [TransactionController::class, 'index']);
+Route::post('/order', [TransactionController::class, 'store']);
 
 // TRACKING PAGE
 // -> Cek transaksi berdasarkan nomor invoice, menampilkan transaksi dan detail transaksi. (Kemungkinan hit API juga, data tampil di halaman yang sama, atau dapat berupa sehingga user tidak ter-redirect ke halaman lain)

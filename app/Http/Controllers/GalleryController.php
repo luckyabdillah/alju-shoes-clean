@@ -86,7 +86,7 @@ class GalleryController extends Controller
 
         Gallery::where('id', $gallery->id)->update($validatedData);
 
-        return redirect('/dashboard/master-data/gallery')->with('success', "Gallery: $gallery->name has been sucessfully updated");
+        return redirect('/dashboard/master-data/gallery')->with('success', "$gallery->name has been sucessfully updated");
     }
 
     /**
@@ -98,7 +98,7 @@ class GalleryController extends Controller
 
         Storage::delete($gallery->img);
 
-        return redirect('/dashboard/master-data/gallery')->with('success', "Gallery: $gallery->name has been sucessfully deleted");
+        return redirect('/dashboard/master-data/gallery')->with('success', "$gallery->name has been sucessfully deleted");
     }
 
     public function statusUpdate(Gallery $gallery) {
@@ -108,6 +108,6 @@ class GalleryController extends Controller
             Gallery::where('id', $gallery->id)->update(['status' => 1]);
         }
 
-        return redirect('/dashboard/master-data/gallery')->with('success', "Status: $gallery->name has been sucessfully updated");
+        return redirect('/dashboard/master-data/gallery')->with('success', "$gallery->name status has been sucessfully updated");
     }
 }

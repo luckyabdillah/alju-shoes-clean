@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Models\Customer;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,6 +15,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+Route::get('/customer/{whatsapp_number}', function(string $number) {
+    // dd($number);
+    $customer = Customer::where('whatsapp_number', $number)->first();
+    // dd($customer->name);
+    if ($customer) {
+        return response()->json([
+            'status' => 'OK',
+            'message' => 'Data ditemukan',
+            'data' => $customer
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => false,
+            'message' => 'Data tidak ditemukan'
+        ]);
+    }
 });

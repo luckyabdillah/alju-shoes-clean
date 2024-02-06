@@ -71,7 +71,7 @@ class OutletController extends Controller
 
         Outlet::where('id', $outlet->id)->update($validatedData);
 
-        return redirect('/dashboard/master-data/outlet')->with('success', "Outlet: $outlet->outlet_name has been successfully updated");
+        return redirect('/dashboard/master-data/outlet')->with('success', "$outlet->outlet_name has been successfully updated");
     }
 
     /**
@@ -81,7 +81,7 @@ class OutletController extends Controller
     {
         Outlet::destroy($outlet->id);
 
-        return redirect('/dashboard/master-data/outlet')->with('success', "Outlet: $outlet->outlet_name has been sucessfully deleted");
+        return redirect('/dashboard/master-data/outlet')->with('success', "$outlet->outlet_name has been sucessfully deleted");
     }
 
     public function statusUpdate(Outlet $outlet) {
@@ -91,6 +91,6 @@ class OutletController extends Controller
             Outlet::where('id', $outlet->id)->update(['status' => 1]);
         }
 
-        return redirect('/dashboard/master-data/outlet')->with('success', "Status: $outlet->outlet_name has been sucessfully updated");
+        return redirect('/dashboard/master-data/outlet')->with('success', "$outlet->outlet_name status has been sucessfully updated");
     }
 }

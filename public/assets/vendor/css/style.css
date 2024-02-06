@@ -56,3 +56,7 @@ ul.list-group li.list-group-item strong{
     display: inline-block;
     min-width: 30%;
 }
+/* swal2-popup swal2-modal swal2-show */
+.swal2-container {
+    z-index: 9999 !important;
+}

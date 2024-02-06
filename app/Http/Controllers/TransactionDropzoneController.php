@@ -133,7 +133,7 @@ class TransactionDropzoneController extends Controller
             Transaction::where('id', $transaction->id)->update(['transaction_status' => 'pending']);
         }
 
-        return redirect('/dashboard/transaction/dropzone')->with('success', "Status: $transaction->invoice_no has been sucessfully updated");
+        return redirect('/dashboard/transaction/dropzone')->with('success', "$transaction->invoice_no status has been sucessfully updated");
     }
 
     /**

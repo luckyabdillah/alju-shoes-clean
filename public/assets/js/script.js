@@ -9,6 +9,16 @@ new DataTable('#data-table', {
     ]
 });
 
+const flashData = $('.flash-data').data('flash');
+
+if (flashData) {
+    Swal({
+        title: 'Success',
+        text: flashData,
+        type: 'success'
+    })
+}
+
 // $(".btn-status").click(function (event) {
 //     var form = $(this).closest("form");
 //     var name = $(this).data("name");
@@ -35,19 +45,16 @@ $(document).on('click', '.btn-status', function (event) {
     var form = $(this).closest("form");
     var name = $(this).data("name");
     event.preventDefault();
-    swal({
+    Swal({
         title: "Change Status",
         text: "Are you sure want to change the status?",
-        icon: "warning",
-        // type: "warning",
-        buttons: ["Cancel", "Yes!"],
-        // confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        position: "center",
-        dangerMode: true,
-        // confirmButtonText: 'Yes, delete it!'
-    }).then((willDelete) => {
-        if (willDelete) {
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#ff3e1d',
+        cancelButtonColor: '#8592a3',
+        confirmButtonText: 'Yes!'
+    }).then((result) => {
+        if (result.value) {
             form.submit();
         }
     });
@@ -79,19 +86,16 @@ $(document).on('click', '.btn-delete', function (event) {
     var form = $(this).closest("form");
     var name = $(this).data("name");
     event.preventDefault();
-    swal({
+    Swal({
         title: "Delete Data",
         text: "Are you sure want to delete this data?",
-        icon: "warning",
-        // type: "warning",
-        buttons: ["Cancel", "Yes!"],
-        // confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        position: "center",
-        dangerMode: true,
-        // confirmButtonText: 'Yes, delete it!'
-    }).then((willDelete) => {
-        if (willDelete) {
+        type: "warning",
+        showCancelButton: true,
+        confirmButtonColor: '#ff3e1d',
+        cancelButtonColor: '#8592a3',
+        confirmButtonText: 'Yes!'
+    }).then((result) => {
+        if (result.value) {
             form.submit();
         }
     });

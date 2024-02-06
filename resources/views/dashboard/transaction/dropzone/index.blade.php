@@ -7,10 +7,7 @@
         <div class="card-body">
             {{-- <h6><a href="/dashboard/master-data/campaign/create" class="btn btn-dark">Add New Campaign</a></h6> --}}
             @if (session()->has('success'))
-            <div class="alert alert-success alert-dismissible fade show mb-3" role="alert">
-                <span class="text-black">{{ session('success') }}</span>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
+            <div class="flash-data" data-flash="{{ session('success') }}"></div>
             @endif
             <div class="table-responsive text-nowrap">
                 <table class="table display" id="">
@@ -30,67 +27,82 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($transactions as $transaction)
-                        <tr class="text-center">
-                            <td class="text-start">{{ $loop->iteration }}</td>
-                            <td class="text-start">{{ $transaction->invoice_no }}</td>
-                            <td class="text-start">{{ $transaction->customer->name }}</td>
-                            <td class="text-start">{{ $transaction->outlet->outlet_name }}</td>
-                            <td>{{ ucfirst($transaction->payment_method) }}</td>
-                            {{-- <td>{{ date_format(date_create($transaction->transaction_start), 'd-M-Y, H:i:s') }}</td>
-                            <td>{{ date_format(date_create($transaction->transaction_end), 'd-M-Y, H:i:s') }}</td> --}}
-                            <td>
-                                <form action="/dashboard/transaction/dropzone/{{ $transaction->uuid }}/payment-update" method="post">
-                                    @csrf
-                                    @method('put')
-                                    <button type="submit" class="btn btn-{{ $transaction->payment_status == 'unpaid' ? 'danger' : 'success' }} btn-status badge my-badge">
-                                        {{-- <i class="bx bxs-circle text-{{ $campaign->status == 1 ? 'success' : 'danger' }}"></i> --}}
-                                        {{ $transaction->payment_status }}
-                                    </button>
-                                </form>
-                            </td>
-                            <td>IDR {{ number_format($transaction->total_amount, 0, '.', ',') }}</td>
-                            <td>
-                                @if ($transaction->transaction_status == 'on_progress')
+                        @if ($transactions->count())
+                            @foreach ($transactions as $transaction)
+                            <tr class="text-center">
+                                <td class="text-start">{{ $loop->iteration }}</td>
+                                <td class="text-start">{{ $transaction->invoice_no }}</td>
+                                <td class="text-start">{{ $transaction->customer->name }}</td>
+                                <td class="text-start">{{ $transaction->outlet->outlet_name }}</td>
+                                <td>{{ ucfirst($transaction->payment_method) }}</td>
+                                {{-- <td>{{ date_format(date_create($transaction->transaction_start), 'd-M-Y, H:i:s') }}</td>
+                                <td>{{ date_format(date_create($transaction->transaction_end), 'd-M-Y, H:i:s') }}</td> --}}
+                                <td>
+                                    <form action="/dashboard/transaction/dropzone/{{ $transaction->uuid }}/payment-update" method="post">
+                                        @csrf
+                                        @method('put')
+                                        <button type="submit" class="btn btn-{{ $transaction->payment_status == 'unpaid' ? 'danger' : 'success' }} btn-status badge my-badge">
+                                            {{-- <i class="bx bxs-circle text-{{ $campaign->status == 1 ? 'success' : 'danger' }}"></i> --}}
+                                            {{ $transaction->payment_status }}
+                                        </button>
+                                    </form>
+                                </td>
+                                <td>IDR {{ number_format($transaction->total_amount, 0, '.', ',') }}</td>
+                                <td>
+                                    @if ($transaction->transaction_status == 'on_progress')
+                                        <button
+                                            type="button"
+                                            class="border-0 bg-light btn-transaction-done"
+                                            data-uuid="{{ $transaction->uuid }}"
+                                        >
+                                            <i class="bx bxs-circle text-warning fs-4"></i>
+                                        </button>
+                                    @else
+                                    <form action="/dashboard/transaction/dropzone/{{ $transaction->uuid }}/status-update" method="post">
+                                        @csrf
+                                        @method('put')
+                                        <button type="submit" class="border-0 btn-status bg-light">
+                                            <i class="bx bxs-circle text-{{ $transaction->transaction_status == 'pending' ? 'danger' : 'dark' }} fs-4"></i>
+                                        </button>
+                                    </form>
+                                    @endif
+                                </td>
+                                <td>
+                                    <a href="javascript:void(0)" class="btn btn-dark badge my-badge btn-print" data-invoice="{{ $transaction->invoice_no }}"><i class="bx bx-printer"></i></a>
                                     <button
                                         type="button"
-                                        class="border-0 bg-light btn-transaction-done"
-                                        data-uuid="{{ $transaction->uuid }}"
+                                        class="btn btn-secondary badge my-badge btn-detail-pending"
+                                        data='{
+                                            "uuid":"{{ $transaction->uuid }}",
+                                            "invoiceNo":"{{ $transaction->invoice_no }}",
+                                            "customer":"{{ $transaction->customer->name }}",
+                                            "outlet":"{{ $transaction->outlet->outlet_name }}",
+                                            "start":"{{ date_format(date_create($transaction->transaction_start), 'd M Y, H:i:s') }}",
+                                            "end":"{{ date_format(date_create($transaction->transaction_end), 'd M Y, H:i:s') }}",
+                                            "totalItems":"{{ $transaction->total_items }}",
+                                            "totalAmount":{{ $transaction->total_amount }},
+                                            "detailTransactions":{{ $transaction->detail_transactions }}
+                                        }'
                                     >
-                                        <i class="bx bxs-circle text-warning fs-4"></i>
+                                        <i class="bx bx-show-alt"></i>
                                     </button>
-                                @else
-                                <form action="/dashboard/transaction/dropzone/{{ $transaction->uuid }}/status-update" method="post">
-                                    @csrf
-                                    @method('put')
-                                    <button type="submit" class="border-0 btn-status bg-light">
-                                        <i class="bx bxs-circle text-{{ $transaction->transaction_status == 'pending' ? 'danger' : 'dark' }} fs-4"></i>
-                                    </button>
-                                </form>
-                                @endif
-                            </td>
-                            <td>
-                                <a href="javascript:void(0)" class="btn btn-dark badge my-badge btn-print" data-invoice="{{ $transaction->invoice_no }}"><i class="bx bx-printer"></i></a>
-                                <button
-                                    type="button"
-                                    class="btn btn-secondary badge my-badge btn-detail-pending"
-                                    data='{
-                                        "uuid":"{{ $transaction->uuid }}",
-                                        "invoiceNo":"{{ $transaction->invoice_no }}",
-                                        "customer":"{{ $transaction->customer->name }}",
-                                        "outlet":"{{ $transaction->outlet->outlet_name }}",
-                                        "start":"{{ date_format(date_create($transaction->transaction_start), 'd M Y, H:i:s') }}",
-                                        "end":"{{ date_format(date_create($transaction->transaction_end), 'd M Y, H:i:s') }}",
-                                        "totalItems":"{{ $transaction->total_items }}",
-                                        "totalAmount":{{ $transaction->total_amount }},
-                                        "detailTransactions":{{ $transaction->detail_transactions }}
-                                    }'
-                                >
-                                    <i class="bx bx-show-alt"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        @endforeach
+                                    {{-- @if ($transaction->is_completed == 0)
+                                    <form action="/dashboard/transaction/dropzone/{{ $transaction->uuid }}/status-update" method="post" class="d-inline">
+                                        @csrf
+                                        @method('put')
+                                        <button type="submit" class="btn btn-success badge my-badge btn-status">
+                                            <i class="bx bx-check"></i>
+                                        </button>
+                                    </form>
+                                    @endif --}}
+                                </td>
+                            </tr>
+                            @endforeach
+                        @else
+                            <tr class="text-center">
+                                <td colspan="9">No pending transaction.</td>
+                            </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>

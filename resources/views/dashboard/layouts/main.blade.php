@@ -98,7 +98,7 @@
         <script src="{{ asset('assets/js/dashboards-analytics.js') }}"></script>
 
         <!-- SweetAlertJS -->
-        <script src="{{ asset('assets/js/sweetalert2.js') }}"></script>
+        <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
 
         {{-- DataTables --}}
         <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>

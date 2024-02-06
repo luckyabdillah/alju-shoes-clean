@@ -87,7 +87,7 @@ class CampaignController extends Controller
 
         Campaign::where('id', $campaign->id)->update($validatedData);
 
-        return redirect('/dashboard/master-data/campaign')->with('success', "Campaign: $campaign->name has been sucessfully updated");
+        return redirect('/dashboard/master-data/campaign')->with('success', "$campaign->name has been sucessfully updated");
     }
 
     /**
@@ -99,7 +99,7 @@ class CampaignController extends Controller
 
         Storage::delete($campaign->img);
 
-        return redirect('/dashboard/master-data/campaign')->with('success', "Campaign: $campaign->name has been sucessfully deleted");
+        return redirect('/dashboard/master-data/campaign')->with('success', "$campaign->name has been sucessfully deleted");
     }
 
     public function statusUpdate(Campaign $campaign) {
@@ -109,6 +109,6 @@ class CampaignController extends Controller
             Campaign::where('id', $campaign->id)->update(['status' => 1]);
         }
 
-        return redirect('/dashboard/master-data/campaign')->with('success', "Status: $campaign->name has been sucessfully updated");
+        return redirect('/dashboard/master-data/campaign')->with('success', "$campaign->name status has been sucessfully updated");
     }
 }
