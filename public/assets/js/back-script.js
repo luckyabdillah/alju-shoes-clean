@@ -42,8 +42,8 @@ if (flashData) {
 // });
 
 $(document).on('click', '.btn-status', function (event) {
-    var form = $(this).closest("form");
-    var name = $(this).data("name");
+    let form = $(this).closest("form");
+    let name = $(this).data("name");
     event.preventDefault();
     Swal({
         title: "Change Status",
@@ -83,8 +83,8 @@ $(document).on('click', '.btn-status', function (event) {
 // });
 
 $(document).on('click', '.btn-delete', function (event) {
-    var form = $(this).closest("form");
-    var name = $(this).data("name");
+    let form = $(this).closest("form");
+    let name = $(this).data("name");
     event.preventDefault();
     Swal({
         title: "Delete Data",
@@ -171,11 +171,34 @@ $(document).on('click', '.btn-detail-pending', function(e) {
     $('#detailModal').modal('show');
 })
 
+$(document).on('click', '.btn-customer-detail', function(e) {
+    e.preventDefault();
+    let data = JSON.parse($(this).attr('data'));
+
+    $('#name').text(data.name)
+    $('#number').text(data.number)
+    $('#address').text(data.address)
+    $('#last_order').text(data.last_order)
+    $('#location').html(`<a href="${data.location}" target="_blank"><b>Maps</b></a>`)
+
+    $('#customerDetailModal').modal('show')
+})
+
 $(document).on('click', '.btn-transaction-done', function(e) {
     e.preventDefault();
     let uuid = $(this).data('uuid');
 
     $('#transasctionDoneForm').attr('action', `/dashboard/transaction/dropzone/${uuid}/status-update`);
+    $('#uuid').val(uuid);
+
+    $('#transactionDoneModal').modal('show');
+})
+
+$(document).on('click', '.btn-delivery-done', function(e) {
+    e.preventDefault();
+    let uuid = $(this).data('uuid');
+
+    $('#transasctionDoneForm').attr('action', `/dashboard/transaction/pickup-delivery/${uuid}/status-update`);
     $('#uuid').val(uuid);
 
     $('#transactionDoneModal').modal('show');

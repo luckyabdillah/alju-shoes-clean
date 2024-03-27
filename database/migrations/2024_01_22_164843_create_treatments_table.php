@@ -15,7 +15,6 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->string('name', 100);
-            $table->integer('cost');
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

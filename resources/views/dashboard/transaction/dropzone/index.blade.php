@@ -201,7 +201,7 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title fs-5" id="transactionDoneModalLabel">Proof of pickup</h2>
+                    <h2 class="modal-title fs-5" id="transactionDoneModalLabel">Bukti pengambilan</h2>
                 </div>
                 <div class="modal-body" style="font-size: 1.1em">
                     <form method="post" enctype="multipart/form-data" id="transasctionDoneForm">

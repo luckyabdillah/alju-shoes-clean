@@ -79,6 +79,13 @@
             </a>
         </li>
 
+        <li class="menu-item {{ Request::is('dashboard/master-data/treatment*') ? 'active' : '' }}">
+            <a href="/dashboard/master-data/treatment" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-purchase-tag-alt"></i>
+                <div>Treatment</div>
+            </a>
+        </li>
+
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Management</span>
         </li>

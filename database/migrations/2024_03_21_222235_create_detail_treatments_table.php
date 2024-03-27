@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('detail_treatments', function (Blueprint $table) {
             $table->id();
             $table->uuid('uuid');
+            $table->foreignId('treatment_id');
             $table->string('name', 100);
-            $table->string('whatsapp_number')->unique();
-            $table->text('address');
-            $table->string('benchmark')->nullable();
-            $table->string('lat', 100)->nullable();
-            $table->string('long', 100)->nullable();
-            $table->datetime('last_order')->nullable();
+            $table->integer('cost');
+            $table->integer('processing_time');
+            $table->boolean('status')->default(true);
             $table->timestamps();
         });
     }
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('detail_treatments');
     }
 };

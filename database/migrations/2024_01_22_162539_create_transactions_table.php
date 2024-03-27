@@ -27,7 +27,8 @@ return new class extends Migration
             $table->integer('other_cost')->nullable();
             $table->integer('total_amount');
             $table->string('invoice_no', 100);
-            $table->string('picture_evidence')->nullable();
+            $table->string('proof_of_handover')->nullable();
+            $table->string('proof_of_payment')->nullable();
             $table->boolean('is_completed')->default(false);
             $table->string('transaction_status')->default('pending');
             $table->timestamps();

@@ -1,0 +1,287 @@
+*{
+    font-family: 'Nunito Sans', sans-serif;
+}
+
+body {
+    /* font-size: .9em; */
+}
+
+.bg-my-primary {
+    background-color: #F04438;
+}
+
+.text-my-primary {
+    color: #F04438;
+}
+
+.my-button {
+    border-radius: 10px;
+    padding: 7px 15px;
+    font-size: .9em;
+}
+
+.btn-my-primary {
+    background-color: #F04438;
+    color: white;
+}
+
+.btn-my-primary:hover {
+    background-color: #ca392f;
+    color: white;
+}
+
+.btn-my-secondary {
+    background-color: lightgray;
+}
+
+.btn-my-secondary:hover {
+    background-color: rgb(194, 194, 194);
+}
+
+.btn-my-light {
+    background-color: #e3e3e7;
+}
+
+.btn-my-light:hover {
+    background-color: #d1d0d8;
+}
+
+.btn-outline-my-primary {
+    border-color: #F04438;
+    color: #F04438;
+}
+
+.btn-outline-my-primary:hover {
+    background-color: #F04438;
+    color: white;
+}
+
+.btn-transparent:hover {
+    background-color: #e3e3e7;
+    /* border-color: red; */
+}
+
+.fw-ebold {
+    font-weight: 800;
+}
+
+.move-link {
+    color: #F04438;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.move-link:hover {
+    margin-left: 4px;
+    /* color: black; */
+}
+
+.my-link {
+    color: rgb(129, 129, 129);
+    text-decoration: none;
+    transition: .3s;
+}
+
+.my-link:hover {
+    color: #F04438;
+}
+
+.navbar {
+    font-size: .95em;
+}
+
+.navbar .navbar-brand {
+    font-size: 1.1em;
+}
+
+.navbar-collapse a {
+    margin-left: 1.5em;
+}
+
+.navbar a.btn {
+    background-color: lightgray;
+    font-size: .95em;
+    padding: 7px 15px;
+}
+
+.navbar .navbar-toggler .btn-order {
+    font-size: .7em;
+}
+
+.navbar-toggler:focus {
+    box-shadow: inset 0 0 0;
+}
+
+.hero {
+    margin-top: 7em;
+}
+
+.hero h1 {
+    font-size: 2.8em;
+}
+
+.sub-heading::after {
+    content: '';
+    display: block;
+    width: 60px;
+    border: 1px solid #F04438;
+    margin-top: 5px;
+}
+
+nav.treatment {
+    background-color: rgb(241, 241, 241);
+}
+
+nav.testimoni {
+    /* background-color: rgb(230, 230, 230); */
+    background-image: url('../../../assets/img/icons/background-testimoni.png');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.carousel-item .testimonial p {
+    /* line-height: 100%; */
+    margin-top: 32.5%;
+}
+
+.carousel-control {
+    display: flex;
+    align-items: center;
+    justify-content: end;
+    height: 100%;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    position: static;
+    z-index: 1;
+    display: inline;
+    align-items: center;
+    justify-content: center;
+    width: 7%;
+    padding: 0;
+    color: #9b9b9be7;
+    border: 0;
+    opacity: 0.5;
+    transition: opacity 0.15s ease;
+}
+
+.carousel-control-prev i,
+.carousel-control-next i {
+    font-size: 2em;
+    font-weight: 200;
+}
+
+.carousel-control-prev:hover,
+.carousel-control-prev:focus,
+.carousel-control-next:hover,
+.carousel-control-next:focus {
+    color: #F04438;
+    text-decoration: none;
+    outline: 0;
+    opacity: 0.9;
+}
+
+
+.carousel-indicators {
+    position: static;
+    justify-content: start;
+    margin-left: 0;
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    padding: 0;
+    margin-right: 3px;
+    margin-left: 3px;
+    background-color: #9b9b9be7;
+    border: 0;
+    opacity: 1;
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    transition: background-color 0.6s ease;
+}
+
+.carousel-indicators .active {
+    background-color: #F04438;
+}
+
+.order {
+    margin-top: 7em;
+    margin-bottom: 7em;
+}
+
+.detail-order .form-step button {
+    width: 100px;
+    height: 10px;
+    background-color: #9c9c9cb9;
+    border-radius: 10px;
+    margin-right: 5px;
+    cursor: default;
+}
+
+.detail-order .form-step button.active {
+    background-color: #F04438;
+}
+
+.summary {
+    margin-top: 7em;
+    margin-bottom: 7em;
+}
+
+.footer {
+    font-size: .95em;
+}
+
+.footer h6 {
+    font-weight: 700;
+}
+
+.footer li {
+    list-style-type: none;
+    margin-bottom: 6px;
+}
+
+.footer .footer-link {
+    text-decoration: none;
+    color: black;
+    transition: .3s;
+}
+
+.footer .footer-link:hover {
+    color: #F04438;
+}
+
+
+@media (max-width: 991px) {
+
+    .navbar-collapse a {
+        margin-left: 0;
+    }
+
+    .navbar-collapse .btn-order-collapse {
+        display: none;
+    }
+
+    .detail-order .form-step button {
+        width: 50px;
+    }
+
+}
+
+@media (max-width: 577px) {
+    .container {
+        padding: 0 25px;
+    }
+
+    .navbar .container {
+        padding: 0 13px;
+    }
+
+    .navbar .navbar-brand,
+    .navbar-collapse a {
+        margin-left: 18px;
+    }
+}

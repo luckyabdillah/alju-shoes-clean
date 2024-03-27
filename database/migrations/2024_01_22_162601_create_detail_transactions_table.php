@@ -15,12 +15,15 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->foreignId('transaction_id');
-            $table->string('item_name', 100);
+            $table->foreignId('treatment_id');
+            $table->foreignId('detail_treatment_id');
+            $table->string('treatment_name', 150);
+            $table->string('merk', 100);
             $table->string('type', 50)->default('sepatu');
             $table->string('size', 10)->nullable();
-            $table->foreignId('treatment_id');
             $table->integer('amount');
-            $table->string('status', 50);
+            $table->string('description', 255);
+            $table->string('status', 50)->default('pending');
             $table->timestamps();
         });
     }

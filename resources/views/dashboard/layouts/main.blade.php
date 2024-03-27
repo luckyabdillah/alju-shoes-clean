@@ -21,7 +21,7 @@
         <!-- Core CSS -->
         <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
         <link rel="stylesheet" href="{{ asset('assets/vendor/css/theme-default.css') }}" class="template-customizer-theme-css" />
-        <link rel="stylesheet" href="{{ asset('assets/vendor/css/style.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/vendor/css/back-style.css') }}" />
 
         <!-- Vendors CSS -->
         <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
@@ -107,11 +107,8 @@
         {{-- LightBox JS --}}
         <script src="{{ asset('assets/js/bs5-lightbox.js') }}"></script>
         
-        <script src="{{ asset('assets/js/script.js') }}"></script>
+        <script src="{{ asset('assets/js/back-script.js') }}"></script>
 
         @yield('scripts')
-        
-        <!-- Place this tag in your head or just before your close body tag. -->
-        <script async defer src="https://buttons.github.io/buttons.js"></script>
     </body>
 </html>

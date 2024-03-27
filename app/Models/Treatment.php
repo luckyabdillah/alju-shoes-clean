@@ -12,4 +12,8 @@ class Treatment extends Model
     public function getRouteKeyName() {
         return 'uuid';
     }
+
+    public function detail_treatments() {
+        return $this->hasMany(DetailTreatment::class);
+    }
 }
