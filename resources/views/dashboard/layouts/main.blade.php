@@ -8,7 +8,8 @@
         <meta name="description" content="" />
 
         <!-- Favicon -->
-        <link rel="icon" type="image/x-icon" href="{{ asset('assets/img/icons/alju-shoes-clean-logo-transparent.png') }}" />
+        <link rel="shortcut icon" href="{{ asset('assets/img/icons/alju-logo-circle-modified.ico') }}" />
+        <link rel="apple-touch-icon" href="{{ asset('assets/img/icons/alju-logo-circle-modified.png') }}" />
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -85,7 +86,9 @@
         <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
         <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
         <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
-        <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
+        {{-- <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script> --}}
+
+        <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
         <!-- endbuild -->
 
         <!-- Vendors JS -->
@@ -100,11 +103,11 @@
         <!-- SweetAlertJS -->
         <script src="{{ asset('assets/js/sweetalert2.all.min.js') }}"></script>
 
-        {{-- DataTables --}}
+        <!-- DataTables -->
         <script src="{{ asset('assets/js/jquery.dataTables.min.js') }}"></script>
         <script src="{{ asset('assets/js/dataTables.bootstrap5.min.js') }}"></script>
 
-        {{-- LightBox JS --}}
+        <!-- LightBox JS -->
         <script src="{{ asset('assets/js/bs5-lightbox.js') }}"></script>
         
         <script src="{{ asset('assets/js/back-script.js') }}"></script>

@@ -39,6 +39,11 @@
     text-decoration: underline;
 }
 
+table.table tr th:first-child,
+table.table tr td:first-child {
+    width: 1px;
+}
+
 .modal-body ul {
     list-style-type: disc;
 }
@@ -56,6 +61,20 @@ ul.list-group li.list-group-item strong{
     display: inline-block;
     min-width: 30%;
 }
+
+.form-check-input.checkbox-primary:checked {
+    border-color: red;
+    background-color: red !important;
+}
+
+.form-check-input.checkbox-primary {
+    border-color: #8d6969;
+}
+
+.form-check-input.checkbox-primary:focus {
+    border-color: red !important;
+}
+
 /* swal2-popup swal2-modal swal2-show */
 .swal2-container {
     z-index: 9999 !important;

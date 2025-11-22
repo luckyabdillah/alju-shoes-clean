@@ -3,189 +3,185 @@
 @section('content')
 <div class="container mt-4">
     <div class="card">
-        <h4 class="card-header">Transaction Pending : Pickup & Delivery</h4>
+        <h4 class="card-header">Transaksi: Pickup & Delivery</h4>
         <div class="card-body">
             @if (session()->has('success'))
             <div class="flash-data" data-flash="{{ session('success') }}"></div>
             @endif
             <h5>Pickup</h5>
             <div class="table-responsive text-nowrap">
-                <table class="table display" id="">
+                <table class="table table-bordered data-table">
                     <thead>
-                        <tr class="text-center">
-                            <th class="text-start">#</th>
-                            <th class="text-start">Invoice</th>
-                            <th class="text-start">Customer</th>
-                            <th>Pickup</th>
-                            <th>Payment</th>
-                            <th>Total Amount</th>
-                            <th>Action</th>
-                            <th>Complete</th>
+                        <tr>
+                            <th class="text-center">No.</th>
+                            <th class="text-center">Customer</th>
+                            <th class="text-center">Tanggal Pickup</th>
+                            <th class="text-center">Pembayaran</th>
+                            <th class="text-center">Status Pembayaran</th>
+                            <th class="text-center">Tagihan</th>
+                            <th class="text-center">#</th>
+                            @can('administrator')
+                                <th class="text-center text-danger">DANGER ZONE</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($pickup_transactions->count())
-                            @foreach ($pickup_transactions as $pickup_transaction)
+                        @foreach ($pickup_transactions as $pickup_transaction)
                             <tr class="text-center">
-                                <td class="text-start">{{ $loop->iteration }}</td>
-                                <td class="text-start">{{ $pickup_transaction->invoice_no }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td class="text-start">{{ $pickup_transaction->customer->name }}</td>
-                                <td>{{ date_format(date_create($pickup_transaction->transaction_start), 'd M Y, H:i:s') }}</td>
+                                <td>{{ date('d M Y, H:i:s', strtotime($pickup_transaction->transaction_start)) }}</td>
+                                <td>
+                                    @if ($pickup_transaction->proof_of_payment)
+                                        <a href="{{ asset('storage/' . $pickup_transaction->proof_of_payment) }}" data-toggle="lightbox" style="text-decoration: underline;">
+                                            QRIS
+                                        </a>
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>
                                     <form action="/dashboard/transaction/pickup-delivery/{{ $pickup_transaction->uuid }}/payment-update" method="post">
                                         @csrf
                                         @method('put')
                                         <button type="submit" class="btn btn-{{ $pickup_transaction->payment_status == 'unpaid' ? 'danger' : 'success' }} btn-status badge my-badge">
-                                            {{ $pickup_transaction->payment_status }}
+                                            {{ $pickup_transaction->payment_status == 'unpaid' ? 'belum bayar' : 'lunas' }}
                                         </button>
                                     </form>
                                 </td>
-                                <td>IDR {{ number_format($pickup_transaction->total_amount, 0, '.', ',') }}</td>
+                                <td>IDR {{ number_format($pickup_transaction->total_cost, 0, '.', ',') }}</td>
                                 <td>
-                                    <a href="javascript:void(0)" class="btn btn-dark badge my-badge btn-print" data-invoice="{{ $pickup_transaction->invoice_no }}"><i class="bx bx-printer"></i></a>
+                                    <a href="/transaction/{{ $pickup_transaction->uuid }}" target="_blank" class="btn btn-dark badge my-badge me-1">
+                                        <i class="bx bx-printer"></i>
+                                    </a>
                                     <button
                                         type="button"
-                                        class="btn btn-secondary badge my-badge btn-detail-pending"
+                                        class="btn btn-secondary badge my-badge btn-transaction-details me-1"
                                         data='{
                                             "uuid":"{{ $pickup_transaction->uuid }}",
                                             "invoiceNo":"{{ $pickup_transaction->invoice_no }}",
                                             "customer":"{{ $pickup_transaction->customer->name }}",
-                                            "outlet":"Pickup / Penjemputan",
-                                            "start":"{{ date_format(date_create($pickup_transaction->transaction_start), 'd M Y, H:i:s') }}",
-                                            "end":"{{ date_format(date_create($pickup_transaction->transaction_end), 'd M Y, H:i:s') }}",
+                                            "type":"Pickup",
+                                            "date":"{{ date('d M Y, H:i:s', strtotime($pickup_transaction->transaction_start)) }}",
                                             "totalItems":"{{ $pickup_transaction->total_items }}",
-                                            "totalAmount":{{ $pickup_transaction->total_amount }},
-                                            "detailTransactions":{{ $pickup_transaction->detail_transactions }}
+                                            "totalCost":{{ $pickup_transaction->total_cost }},
+                                            "transactionDetails":{{ $pickup_transaction->transaction_details }},
+                                            "whatsappNumber":"{{ $pickup_transaction->customer->whatsapp_number }}",
+                                            "address":"{{ $pickup_transaction->customer->address }}",
+                                            "benchmark":"{{ $pickup_transaction->customer->benchmark }}",
+                                            "coordinate":"{{ $pickup_transaction->customer->lat }},{{ $pickup_transaction->customer->long }}"
                                         }'
                                     >
                                         <i class="bx bx-show-alt"></i>
                                     </button>
-                                    <a
-                                        href="https://www.google.com/maps/place/{{ $pickup_transaction->customer->lat }},{{ $pickup_transaction->customer->long }}"
-                                        target="_blank"
-                                        class="btn btn-danger badge my-badge">
-                                            <i class="bx bxs-map"></i>
-                                    </a>
-                                    <a 
-                                        href="https://wa.me/{{ $pickup_transaction->customer->whatsapp_number }}?text=Halo Kak {{ $pickup_transaction->customer->name }}, kami dari tim Alju Shoes Clean sedang dalam perjalanan untuk mengambil item Kakak. Siap-siap ya!" 
-                                        target="_blank" 
-                                        class="btn btn-warning badge my-badge">
-                                            <i class="bx bxl-whatsapp"></i>
-                                    </a>
-                                    <a 
-                                        href="https://wa.me/{{ $pickup_transaction->customer->whatsapp_number }}?text=Halo Kak {{ $pickup_transaction->customer->name }}, kami sudah sampai di lokasi ya" 
-                                        target="_blank" 
-                                        class="btn btn-success badge my-badge">
-                                        <i class="bx bxl-whatsapp"></i>
-                                    </a>
-                                </td>
-                                <td>
-                                    <form action="/dashboard/transaction/pickup-delivery/{{ $pickup_transaction->uuid }}/status-update" method="post">
+                                    <form action="/dashboard/transaction/pickup-delivery/{{ $pickup_transaction->uuid }}/status-update" method="post" class="d-inline">
                                         @csrf
                                         @method('put')
-                                        <button type="submit" class="btn btn-status btn-primary badge my-badge">
+                                        <button type="submit" class="btn btn-confirm btn-warning badge my-badge">
                                             <i class="bx bx-check"></i>
                                         </button>
                                     </form>
+                                    @can('administrator')
+                                        <td>
+                                            <form action="/dashboard/pickup-delivery/dropzone/{{ $pickup_transaction->uuid }}" method="post" class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-danger btn-delete">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endcan
                                 </td>
                             </tr>
-                            @endforeach
-                        @else
-                            <tr class="text-center">
-                                <td colspan="9">No pending pickup transaction.</td>
-                            </tr>
-                        @endif
+                        @endforeach
                     </tbody>
                 </table>
             </div>
-            <br>
-            <h5>Delivery</h5>
+
+            <h5 class="mt-5">Delivery</h5>
             <div class="table-responsive text-nowrap">
-                <table class="table display" id="">
+                <table class="table table-bordered data-table">
                     <thead>
-                        <tr class="text-center">
-                            <th class="text-start">#</th>
-                            <th class="text-start">Invoice</th>
-                            <th class="text-start">Customer</th>
-                            <th>Delivery</th>
-                            <th>Payment</th>
-                            <th>Total Amount</th>
-                            <th>Action</th>
-                            <th>Complete</th>
+                        <tr>
+                            <th class="text-center">No.</th>
+                            <th class="text-center">Customer</th>
+                            <th class="text-center">Tanggal Delivery</th>
+                            <th class="text-center">Pembayaran</th>
+                            <th class="text-center">Status Pembayaran</th>
+                            <th class="text-center">Tagihan</th>
+                            <th class="text-center">#</th>
+                            @can('administrator')
+                                <th class="text-center text-danger">DANGER ZONE</th>
+                            @endcan
                         </tr>
                     </thead>
                     <tbody>
-                        @if ($delivery_transactions->count())
-                            @foreach ($delivery_transactions as $delivery_transaction)
+                        @foreach ($delivery_transactions as $delivery_transaction)
                             <tr class="text-center">
-                                <td class="text-start">{{ $loop->iteration }}</td>
-                                <td class="text-start">{{ $delivery_transaction->invoice_no }}</td>
+                                <td>{{ $loop->iteration }}</td>
                                 <td class="text-start">{{ $delivery_transaction->customer->name }}</td>
-                                <td>{{ date_format(date_create($delivery_transaction->transaction_end), 'd M Y, H:i:s') }}</td>
+                                <td>{{ date('d M Y, H:i:s', strtotime($delivery_transaction->transaction_end)) }}</td>
+                                <td>
+                                    <a href="{{ asset('storage/' . $delivery_transaction->proof_of_payment) }}" data-toggle="lightbox" style="text-decoration: underline;">
+                                        QRIS
+                                    </a>
+                                </td>
                                 <td>
                                     <form action="/dashboard/transaction/pickup-delivery/{{ $delivery_transaction->uuid }}/payment-update" method="post">
                                         @csrf
                                         @method('put')
                                         <button type="submit" class="btn btn-{{ $delivery_transaction->payment_status == 'unpaid' ? 'danger' : 'success' }} btn-status badge my-badge">
-                                            {{ $delivery_transaction->payment_status }}
+                                            {{ $delivery_transaction->payment_status == 'unpaid' ? 'belum bayar' : 'lunas' }}
                                         </button>
                                     </form>
                                 </td>
-                                <td>IDR {{ number_format($delivery_transaction->total_amount, 0, '.', ',') }}</td>
+                                <td>IDR {{ number_format($delivery_transaction->total_cost, 0, '.', ',') }}</td>
                                 <td>
-                                    <a href="javascript:void(0)" class="btn btn-dark badge my-badge btn-print" data-invoice="{{ $delivery_transaction->invoice_no }}"><i class="bx bx-printer"></i></a>
+                                    <a href="/transaction/{{ $delivery_transaction->uuid }}" target="_blank" class="btn btn-dark badge my-badge me-1">
+                                        <i class="bx bx-printer"></i>
+                                    </a>
                                     <button
                                         type="button"
-                                        class="btn btn-secondary badge my-badge btn-detail-pending"
+                                        class="btn btn-secondary badge my-badge btn-transaction-details me-1"
                                         data='{
                                             "uuid":"{{ $delivery_transaction->uuid }}",
                                             "invoiceNo":"{{ $delivery_transaction->invoice_no }}",
                                             "customer":"{{ $delivery_transaction->customer->name }}",
-                                            "outlet":"Delivery / Pengantaran",
-                                            "start":"{{ date_format(date_create($delivery_transaction->transaction_start), 'd M Y, H:i:s') }}",
-                                            "end":"{{ date_format(date_create($delivery_transaction->transaction_end), 'd M Y, H:i:s') }}",
+                                            "type":"Delivery",
+                                            "date":"{{ date('d M Y, H:i:s', strtotime($delivery_transaction->transaction_end)) }}",
                                             "totalItems":"{{ $delivery_transaction->total_items }}",
-                                            "totalAmount":{{ $delivery_transaction->total_amount }},
-                                            "detailTransactions":{{ $delivery_transaction->detail_transactions }}
+                                            "totalCost":{{ $delivery_transaction->total_cost }},
+                                            "transactionDetails":{{ $delivery_transaction->transaction_details }},
+                                            "whatsappNumber":"{{ $delivery_transaction->customer->whatsapp_number }}",
+                                            "address":"{{ $delivery_transaction->customer->address }}",
+                                            "benchmark":"{{ $delivery_transaction->customer->benchmark }}",
+                                            "coordinate":"{{ $delivery_transaction->customer->lat }},{{ $delivery_transaction->customer->long }}"
                                         }'
                                     >
                                         <i class="bx bx-show-alt"></i>
                                     </button>
-                                    <a
-                                        href="https://www.google.com/maps/place/{{ $delivery_transaction->customer->lat }},{{ $delivery_transaction->customer->long }}"
-                                        target="_blank"
-                                        class="btn btn-danger badge my-badge">
-                                            <i class="bx bxs-map"></i>
-                                    </a>
-                                    <a 
-                                        href="https://wa.me/{{ $delivery_transaction->customer->whatsapp_number }}?text=Halo Kak {{ $delivery_transaction->customer->name }}, kami dari tim Alju Shoes Clean sedang dalam perjalanan untuk mengantar item Kakak. Siap-siap ya!" 
-                                        target="_blank" 
-                                        class="btn btn-warning badge my-badge">
-                                            <i class="bx bxl-whatsapp"></i>
-                                    </a>
-                                    <a 
-                                        href="https://wa.me/{{ $delivery_transaction->customer->whatsapp_number }}?text=Halo Kak {{ $delivery_transaction->customer->name }}, kami sudah sampai di lokasi ya" 
-                                        target="_blank" 
-                                        class="btn btn-success badge my-badge">
-                                        <i class="bx bxl-whatsapp"></i>
-                                    </a>
-                                </td>
-                                <td>
                                     <button
                                         type="button"
-                                        class="btn btn-primary badge my-badge btn-delivery-done"
+                                        class="btn btn-success badge my-badge btn-delivery-done"
                                         data-uuid="{{ $delivery_transaction->uuid }}"
                                     >
                                         <i class="bx bx-check"></i>
                                     </button>
+                                    @can('administrator')
+                                        <td>
+                                            <form action="/dashboard/transaction/pickup-delivery/{{ $delivery_transaction->uuid }}" method="post" class="d-inline">
+                                                @csrf
+                                                @method('delete')
+                                                <button type="submit" class="btn btn-danger btn-delete">
+                                                    Hapus
+                                                </button>
+                                            </form>
+                                        </td>
+                                    @endcan
                                 </td>
                             </tr>
-                            @endforeach
-                        @else
-                            <tr class="text-center">
-                                <td colspan="9">No pending delivery transaction.</td>
-                            </tr>
-                        @endif
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -196,39 +192,58 @@
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h2 class="modal-title fs-5" id="detailModalLabel"></h2>
+                    <h2 class="modal-title fs-5" id="detailModalLabel">Detail Transaksi</h2>
                 </div>
-                <div class="modal-body" style="font-size: 1.1em">
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <strong>Customer Name </strong>: <span id="customer-name"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>Type </strong>: <span id="outlet"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>Start Date </strong>: <span id="start-date"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>End Date </strong>: <span id="end-date"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>Total Items </strong>: <span id="total-items"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>Total Amount </strong>: <span id="total-amount"></span>
-                        </li>
-                        <li class="list-group-item">
-                            <strong>Detail Transaction </strong>:
-                            {{-- <span class="d-block mt-1" id="detail-transaction"></span> --}}
-                            <ul class="d-block mt-1" id="detail-transaction" style="list-style-type: disc;">
-
-                            </ul>
-                        </li>
-                    </ul>
-                    <div class="text-end">
-                        <button class="btn btn-secondary mt-3" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                <div class="modal-body" style="font-size: 1.05em">
+                    <div class="mb-3">
+                        <label for="invoice_no" class="form-label fw-semibold">No. Invoice</label>
+                        <input type="text" name="invoice_no" id="invoice_no" class="form-control" readonly>
                     </div>
+                    <div class="mb-3">
+                        <label for="customer_name" class="form-label fw-semibold">Nama Customer</label>
+                        <input type="text" class="form-control" name="customer_name" id="customer_name" readonly>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label for="type" class="form-label fw-semibold">Type</label>
+                            <input type="text" class="form-control" name="type" id="type" readonly>
+                        </div>
+                        <div class="col-md-7 mb-3">
+                            <label for="date" class="form-label fw-semibold">Tanggal</label>
+                            <input type="text" class="form-control" name="date" id="date" readonly>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 mb-3">
+                            <label for="total_items" class="form-label fw-semibold">Total Item</label>
+                            <input type="text" class="form-control" name="total_items" id="total_items" readonly>
+                        </div>
+                        <div class="col-7 mb-3">
+                            <label for="total_cost" class="form-label fw-semibold">Tagihan</label>
+                            <input type="text" class="form-control" name="total_cost" id="total_cost" readonly>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="address" class="form-label fw-semibold">Alamat</label>
+                        <textarea class="form-control" name="address" id="address" rows="3" readonly></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="benchmark" class="form-label fw-semibold">Detail Lainnya</label>
+                        <input type="text" class="form-control" name="benchmark" id="benchmark" readonly>
+                    </div>
+                    <div class="details-container">
+                        <strong>Detail Item:</strong>
+                        <ul class="d-block mt-1" id="transaction_details" style="list-style-type: disc;">
+
+                        </ul>
+                    </div>
+                    <div class="text-end">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn btn-danger btn-whatsapp" target="_blank"><i class="bx-fw bx bxl-whatsapp text-white mb-1"></i></a>
+                    <a class="btn btn-warning btn-location" target="_blank"><i class="bx-fw bx bxs-map text-white mb-1"></i></a>
+                    <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
                 </div>
             </div>
         </div>
@@ -246,40 +261,91 @@
                         @csrf
                         <input type="hidden" name="uuid" id="uuid" value="{{ old('uuid') }}">
                         <div class="mb-3">
-                            <label for="picture_evidence" class="form-label">Upload Image</label>
-                            <input class="form-control @error('picture_evidence') is-invalid @enderror" type="file" id="picture_evidence" name="picture_evidence" required>
-                            @error('picture_evidence')
+                            <label for="proof_of_handover" class="form-label">Upload Gambar</label>
+                            <input class="form-control @error('proof_of_handover') is-invalid @enderror" type="file" id="proof_of_handover" name="proof_of_handover" required>
+                            @error('proof_of_handover')
                                 <div class="invalid-feedback text-start">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
                         <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-dark me-2">Submit</button>
-                            <button class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                            <button class="btn btn-secondary me-2" type="button" data-bs-dismiss="modal" aria-label="Close">Close</button>
+                            <button type="submit" class="btn btn-danger">Submit</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-
-    {{-- @error('picture_evidence')
-        <p>oi, hehe.</p>
-        {{ $message }}
-    @enderror --}}
-
-    @error('picture_evidence')
-        @section('scripts')
-            <script>
-                window.onload = function() {
-                    let uuid = $('#uuid').val();
-                    $('#transasctionDoneForm').attr('action', `/dashboard/transaction/pickup-delivery/${uuid}/status-update`);
-                    $('#transactionDoneModal').modal('show');
-                }
-            </script>
-        @endsection
-    @enderror
-
 </div>
+@endsection
+
+@section('scripts')
+    <script>
+        $('.data-table').DataTable({
+            autoWidth: false,
+            initComplete: function() {
+                $(this.api().table().container()).find('input').attr('autocomplete', 'off');
+            },
+        });
+        
+        $(document).on('click', '.btn-transaction-details', function(e) {
+            e.preventDefault();
+            let data = JSON.parse($(this).attr('data'));
+
+            // $('#detailModalLabel').text('Detail: ' + data.invoiceNo);
+
+            $('#invoice_no').val(data.invoiceNo);
+            $('#customer_name').val(data.customer);
+            $('#type').val(data.type);
+            $('#date').val(data.date)
+            $('#total_items').val(data.totalItems);
+            $('#total_cost').val('IDR ' + data.totalCost.toLocaleString('en-US'));
+            $('#address').text(data.address);
+            $('#benchmark').val(data.benchmark);
+
+            if (data.type == 'Pickup') {
+                $('.btn-whatsapp').attr('href', `https://wa.me/${data.whatsappNumber}?text=Halo Kak ${data.customer}, kami dari tim Alju Shoes Clean sedang dalam perjalanan untuk menjemput item Kakak. Siap-siap ya!`);
+            } else {
+                $('.btn-whatsapp').attr('href', `https://wa.me/${data.whatsappNumber}?text=Halo Kak ${data.customer}, kami dari tim Alju Shoes Clean sedang dalam perjalanan untuk mengantar item Kakak. Siap-siap ya!`);
+            }
+
+            // const address = document.querySelector('[name="address"]');
+            // address.style.height = 'auto';
+            // address.style.height = address.scrollHeight + 2 + 'px';
+
+            // document.querySelector('[name="special_request"]').addEventListener('input', function(e) {
+            //     e.target.style.height = e.target.scrollHeight + 2 + 'px';
+            // });
+
+            $('.btn-location').attr('href', `https://maps.google.com/?q=${data.coordinate}`);
+
+            const capitalizeWord = (string) => {
+                const firstChar = string.charAt(0).toUpperCase();
+                const remainingChars = string.slice(1);
+                return `${firstChar}${remainingChars}`;
+            }
+            
+            let details = data.transactionDetails;
+            let detail = '';
+            details.forEach((items, i) => {
+                detail += `<li>${capitalizeWord(items.type)} ${items.merk}${(items.size ? ', ' + items.size : '')} <span class="fw-semibold">(${items.treatment_name})</span></li>`;
+            })
+
+            $('#transaction_details').html(detail);
+
+            $('#detailModal').modal('show');
+        });
+    </script>
+
+    @error('proof_of_handover')
+        <script>
+            window.onload = function() {
+                let uuid = $('#uuid').val();
+                $('#transasctionDoneForm').attr('action', `/dashboard/transaction/dropzone/${uuid}/status-update`);
+                $('#transactionDoneModal').modal('show');
+            }
+        </script>
+    @enderror
 @endsection

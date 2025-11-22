@@ -3,62 +3,68 @@
 @section('content')
     <div class="container mt-4">
         <div class="card">
-            <h4 class="card-header">Outlet List</h4>
+            <h4 class="card-header">Daftar Outlet</h4>
             <div class="card-body">
-                <button class="btn btn-dark btn-add mb-3" data-bs-toggle="modal" data-bs-target="#outletModal">Add New Outlet</button>
+                <button class="btn btn-dark btn-add mb-3" data-bs-toggle="modal" data-bs-target="#outletModal">Tambah Outlet</button>
                 @if (session()->has('success'))
                 <div class="flash-data" data-flash="{{ session('success') }}"></div>
                 @endif
-                <div class="table-responsive text-nowrap">
+                <div class="table-responsive text-nowrap text-center">
                     <table class="table table-basic" id="">
                         <thead>
                             <tr>
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Kode Outlet</th>
+                                <th>Kode Order URL</th>
+                                <th>Biaya Potongan Mitra</th>
+                                <th>Status</th>
                                 <th>#</th>
-                                <th>Name</th>
-                                <th>Outlet Code</th>
-                                <th>URL Order Page</th>
-                                <th class="text-center">Status</th>
-                                <th class="text-center">Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             @if ($outlets->count())
                                 @foreach ($outlets as $outlet)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td>{{ $outlet->outlet_name }}</td>
-                                    <td>{{ $outlet->outlet_code }}</td>
-                                    <td class="text-wrap">
-                                        <a href="http://localhost:8000/order?o={{ $outlet->uuid }}" target="_blank">http://localhost:8000/order?o={{ $outlet->uuid }}</a>
-                                    </td>
-                                    <td class="text-center">
-                                        <form action="/dashboard/master-data/outlet/{{ $outlet->uuid }}/status-update" method="post">
-                                            @csrf
-                                            @method('put')
-                                            <button type="submit" class="border-0 btn-status bg-light">
-                                                <i class="bx bxs-circle text-{{ $outlet->status == 1 ? 'success' : 'danger' }} fs-4"></i>
+                                    <tr>
+                                        <td>{{ $loop->iteration }}</td>
+                                        <td>{{ $outlet->outlet_name }}</td>
+                                        <td>{{ $outlet->outlet_code }}</td>
+                                        <td class="text-wrap">
+                                            @if ($outlet->id != 1)
+                                                <a href="{{ url("/order?o=$outlet->uuid") }}" target="_blank">{{ url("/order?o=$outlet->uuid") }}</a>
+                                            @endif
+                                        </td>
+                                        <td>IDR {{ number_format($outlet->partner_price, 0, ',', '.') }}</td>
+                                        <td class="text-center">
+                                            <form action="/dashboard/master-data/outlet/{{ $outlet->uuid }}/status-update" method="post">
+                                                @csrf
+                                                @method('put')
+                                                <button type="submit" class="border-0 btn-status bg-light">
+                                                    <i class="bx bxs-circle text-{{ $outlet->status == 1 ? 'success' : 'danger' }} fs-4"></i>
+                                                </button>
+                                            </form>
+                                        </td>
+                                        <td class="text-center">
+                                            <button
+                                                class="btn btn-warning btn-edit me-2"
+                                                data='{
+                                                    "uuid":"{{ $outlet->uuid }}",
+                                                    "outletName":"{{ $outlet->outlet_name }}",
+                                                    "outletCode":"{{ $outlet->outlet_code }}",
+                                                    "outletPrice":"{{ $outlet->partner_price }}"
+                                                }'
+                                            >
+                                                <i class="bx bx-pencil me-1"></i> Edit
                                             </button>
-                                        </form>
-                                    </td>
-                                    <td class="text-center">
-                                        {{-- <a class="me-2 btn btn-secondary" href="/dashboard/master-data/outlet/{{ $outlet->uuid }}/edit"><i class="bx bx-pencil me-1"></i> Edit</a> --}}
-                                        <button
-                                        class="btn btn-warning btn-edit me-2"
-                                        data='{
-                                            "uuid":"{{ $outlet->uuid }}",
-                                            "outletName":"{{ $outlet->outlet_name }}",
-                                            "outletCode":"{{ $outlet->outlet_code }}"
-                                        }'
-                                        >
-                                        <i class="bx bx-pencil me-1"></i> Edit
-                                    </button>
-                                        <form action="/dashboard/master-data/outlet/{{ $outlet->uuid }}" method="post" class="d-inline">
-                                            @csrf
-                                            @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-delete" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
+                                            @if ($outlet->id != 1)
+                                                <form action="/dashboard/master-data/outlet/{{ $outlet->uuid }}" method="post" class="d-inline">
+                                                    @csrf
+                                                    @method('delete')
+                                                    <button type="submit" class="btn btn-danger btn-delete" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Hapus</button>
+                                                </form>
+                                            @endif
+                                        </td>
+                                    </tr>
                                 @endforeach
                             @else
                                 <tr class="text-center">
@@ -83,8 +89,8 @@
                     @csrf
                     <div class="modal-body">
                         <div class="mb-3">
-                            <label for="outlet_name" class="form-label">Outlet Name</label>
-                            <input class="form-control @error('outlet_name') is-invalid @enderror" type="text" id="outlet_name" name="outlet_name" placeholder="Outlet's name" autocomplete="off" value="{{ old('outlet_name') }}">
+                            <label for="outlet_name" class="form-label">Nama Outlet</label>
+                            <input class="form-control @error('outlet_name') is-invalid @enderror" type="text" id="outlet_name" name="outlet_name" placeholder="Nama Outlet" autocomplete="off" value="{{ old('outlet_name') }}" required>
                             @error('outlet_name')
                                 <div class="invalid-feedback text-start">
                                     {{ $message }}
@@ -92,9 +98,18 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="outlet_code" class="form-label">Outlet Code</label>
-                            <input class="form-control @error('outlet_code') is-invalid @enderror" type="text" id="outlet_code" name="outlet_code" placeholder="Outlet's code" autocomplete="off" value="{{ old('outlet_code') }}">
+                            <label for="outlet_code" class="form-label">Kode Outlet</label>
+                            <input class="form-control @error('outlet_code') is-invalid @enderror" type="text" id="outlet_code" name="outlet_code" placeholder="Kode Outlet" autocomplete="off" value="{{ old('outlet_code') }}" required>
                             @error('outlet_code')
+                                <div class="invalid-feedback text-start">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="partner_price" class="form-label">Biaya Potongan Mitra</label>
+                            <input class="form-control @error('partner_price') is-invalid @enderror" type="number" id="partner_price" name="partner_price" placeholder="Biaya Potongan Mitra" autocomplete="off" value="{{ old('partner_price') }}" required>
+                            @error('partner_price')
                                 <div class="invalid-feedback text-start">
                                     {{ $message }}
                                 </div>
@@ -116,10 +131,11 @@
         $(document).on('click', '.btn-add', function(e) {
             e.preventDefault();
             $('#modalForm').attr('action', '/dashboard/master-data/outlet');
-            $('.modal-title').text('Add New Outlet');
+            $('.modal-title').text('Tambah Outlet');
 
             const nameField = $('[name="outlet_name"]');
             $('[name="outlet_code"]').val('');
+            $('[name="partner_price"]').val(0);
             nameField.val('');
             setTimeout(function() { 
                 nameField.focus(); 
@@ -132,10 +148,11 @@
             $('.modal-title').text('Edit Outlet');
             let data = JSON.parse($(this).attr('data'));
 
-            $('#modalForm').attr('action', '/dashboard/master-data/treatment/' + data.uuid)
+            $('#modalForm').attr('action', '/dashboard/master-data/outlet/' + data.uuid)
             const nameField = $('[name="outlet_name"]');
             nameField.val(data.outletName);
             $('[name="outlet_code"]').val(data.outletCode);
+            $('[name="partner_price"]').val(data.outletPrice);
 
             $('#outletModal').modal('show');
 

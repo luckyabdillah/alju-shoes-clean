@@ -15,4 +15,8 @@ class User extends Authenticatable
     public function getRouteKeyName() {
         return 'uuid';
     }
+
+    public function outlet() {
+        return $this->belongsTo(Outlet::class);;
+    }
 }

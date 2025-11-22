@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->uuid('uuid');
             $table->string('name', 100);
+            $table->enum('type', ['sepatu', 'tas', 'sandal', 'topi']);
             $table->boolean('status')->default(true);
             $table->timestamps();
         });

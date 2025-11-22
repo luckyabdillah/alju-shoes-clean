@@ -609,8 +609,8 @@ a:hover {
 }
 
 .bg-navbar-theme {
-    background-color: #d80404;
-    color: #ffffff;
+    background-color: #fff !important;
+    color: #697a8d;
 }
 .bg-navbar-theme .navbar-brand,
 .bg-navbar-theme .navbar-brand a {
@@ -706,13 +706,16 @@ a:hover {
 }
 
 .bg-menu-theme {
-    background-color: #2e2d2d ;
+    /* background-color: var(--bs-body-bg); */
+    background-color: #fff !important;
+    /* color: #697a8d; */
     color: #697a8d;
+    /* color: var(--bs-body-color); */
 }
 .bg-menu-theme .menu-link,
 .bg-menu-theme .menu-horizontal-prev,
 .bg-menu-theme .menu-horizontal-next {
-    color: #fff;
+    color: var(--bs-body-color);
 }
 .bg-menu-theme .menu-link:hover,
 .bg-menu-theme .menu-link:focus,
@@ -720,8 +723,8 @@ a:hover {
 .bg-menu-theme .menu-horizontal-prev:focus,
 .bg-menu-theme .menu-horizontal-next:hover,
 .bg-menu-theme .menu-horizontal-next:focus {
-    /* color: #566a7f; */
-    color: pink;
+    color: #566a7f;
+    /* color: pink; */
 }
 .bg-menu-theme .menu-link.active,
 .bg-menu-theme .menu-horizontal-prev.active,
@@ -813,10 +816,10 @@ html:not(.layout-menu-collapsed) .bg-menu-theme .menu-inner .menu-item .menu-lin
     /* background-color: rgba(255, 255, 255, 0.16) !important; */
     background-color: #c7270b !important;
 }
-.bg-menu-theme .menu-inner > .menu-item:hover .menu-link{
+/* .bg-menu-theme .menu-inner > .menu-item:hover .menu-link{
     color: #fff;
     background-color: #c7270b !important;
-}
+} */
 .bg-menu-theme .menu-inner > .menu-item.active:before {
     background: #c7270b;
 }

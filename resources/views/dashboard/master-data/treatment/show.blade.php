@@ -38,7 +38,10 @@
                                             "uuid":"{{ $item->uuid }}",
                                             "name":"{{ $item->name }}",
                                             "cost":"{{ $item->cost }}",
-                                            "processingTime":"{{ $item->processing_time }}"
+                                            "processingTime":"{{ $item->processing_time }}",
+                                            "description":"{{ $item->description }}",
+                                            "suitableFor":"{{ $item->suitable_for }}",
+                                            "process":"{{ $item->process }}"
                                         }'
                                         >
                                         <i class="bx bx-pencil me-1"></i> Edit
@@ -46,7 +49,7 @@
                                         <form action="/dashboard/master-data/treatment/{{ $treatment->uuid }}/{{ $item->uuid }}" method="post" class="d-inline">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-delete" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</button>
+                                            <button type="submit" class="btn btn-danger btn-delete" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Hapus</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -92,9 +95,27 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="processing_time" class="form-label">Processing time</label>
+                            <label for="processing_time" class="form-label">Processing Time</label>
                             <input class="form-control @error('processing_time') is-invalid @enderror" type="number" id="processing_time" name="processing_time" placeholder="2" value="{{ old('processing_time') }}" required autocomplete="off">
                             @error('processing_time')
+                                <div class="invalid-feedback text-start">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Deskripsi</label>
+                            <input class="form-control @error('description') is-invalid @enderror" type="text" id="description" name="description" value="{{ old('description') }}" placeholder="Deksripsi" required autocomplete="off">
+                            @error('description')
+                                <div class="invalid-feedback text-start">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label for="suitable_for" class="form-label">Cocok Untuk</label>
+                            <input class="form-control @error('suitable_for') is-invalid @enderror" type="text" id="suitable_for" name="suitable_for" value="{{ old('suitable_for') }}" placeholder="Cocok untuk" required autocomplete="off">
+                            @error('suitable_for')
                                 <div class="invalid-feedback text-start">
                                     {{ $message }}
                                 </div>
@@ -122,6 +143,9 @@
             nameField.val('');
             $('[name="cost"]').val('');
             $('[name="processing_time"]').val('');
+            $('[name="process"]').val('');
+            $('[name="description"]').val('');
+            $('[name="suitable_for"]').val('');
             setTimeout(function() { 
                 nameField.focus(); 
             }, 400);
@@ -138,6 +162,9 @@
             nameField.val(data.name);
             $('[name="cost"]').val(data.cost);
             $('[name="processing_time"]').val(data.processingTime);
+            $('[name="process"]').val(data.process);
+            $('[name="description"]').val(data.description);
+            $('[name="suitable_for"]').val(data.suitableFor);
 
             $('#treatmentModal').modal('show');
 
@@ -148,7 +175,8 @@
 
         $(document).on('click', '.btn-cancel', function(e) {
             e.preventDefault();
-            $('input[name="_method"]').remove();
+            const modalForm = document.querySelector('#modalForm');
+            modalForm.querySelector('input[name="_method"]').remove();
         });
     </script>
 @endsection

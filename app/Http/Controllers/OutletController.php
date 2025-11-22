@@ -14,7 +14,7 @@ class OutletController extends Controller
     public function index()
     {
         return view('dashboard.master-data.outlet.index', [
-            'outlets' => Outlet::latest()->get()
+            'outlets' => Outlet::orderBy('id', 'asc')->get()
         ]);
     }
 
@@ -33,7 +33,8 @@ class OutletController extends Controller
     {
         $validatedData = $request->validate([
             'outlet_name' => 'required|max:100',
-            'outlet_code' => 'required|max:100'
+            'outlet_code' => 'required|max:100',
+            'partner_price' => 'required|numeric|min:0'
         ]);
 
         $validatedData['uuid'] = Str::uuid()->toString();
@@ -66,7 +67,8 @@ class OutletController extends Controller
     {
         $validatedData = $request->validate([
             'outlet_name' => 'required|max:100',
-            'outlet_code' => 'required|max:100'
+            'outlet_code' => 'required|max:100',
+            'partner_price' => 'required|numeric|min:0'
         ]);
 
         Outlet::where('id', $outlet->id)->update($validatedData);

@@ -1,0 +1,61 @@
+.form-signin .form-control:focus {
+    border-color: red;
+}
+
+.form-floating label {
+    color: #8d6969 !important;
+}
+
+.form-check-input:checked {
+    border-color: red;
+    background-color: red !important;
+}
+
+.form-check-input {
+    border-color: #8d6969;
+}
+
+.form-check-input:focus {
+    border-color: red !important;
+}
+
+.form-signin .form-control:focus-within + label {
+    color: red;
+}
+
+.form-signin .form-floating:focus-within {
+    z-index: 2;
+}
+
+.form-signin input[name="username"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.form-signin input[name="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+}
+
+.form-registration input {
+    border-radius: 0;
+    margin-top: -1px;
+}
+
+.form-registration .form-floating:focus-within {
+    z-index: 2;
+}
+
+.login {
+    min-height: 100vh;
+    position: relative;
+}
+
+@media (max-width: 577px) {
+    .login {
+        min-height: 80vh;
+        position: relative;
+    }
+}

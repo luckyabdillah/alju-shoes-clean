@@ -4,39 +4,48 @@
     <div class="container mt-4">
         <div class="col-md-8">
             <div class="card mb-4">
-                <h5 class="card-header">Create New Treatment</h5>
+                <h5 class="card-header">Tambah Treatment Grouping</h5>
                 <div class="card-body">
-                    <form action="/dashboard/master-data/treatment" method="post">
+                    <form action="/dashboard/master-data/treatment" method="post" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
-                            <label for="name" class="form-label">Name</label>
-                            <input class="form-control @error('name') is-invalid @enderror" type="text" id="name" name="name" placeholder="Treatment's name" autocomplete="off" value="{{ old('name') }}">
+                            <label for="name" class="form-label">Nama</label>
+                            <input type="text" class="form-control @error('name') is-invalid @enderror" id="name" name="name" placeholder="Deep Cleaning" value="{{ old('name') }}" required autocomplete="off"/>
                             @error('name')
                                 <div class="invalid-feedback text-start">
                                     {{ $message }}
                                 </div>
                             @enderror
                         </div>
-                        <div class="mb-3">
-                            <label for="cost" class="form-label">Cost</label>
-                            <input class="form-control @error('cost') is-invalid @enderror" type="number" id="cost" name="cost" placeholder="50000" value="{{ old('cost') }}">
-                            @error('cost')
-                                <div class="invalid-feedback text-start">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                        <div class="row g-3 mb-3">
+                            <div class="col-md-6">
+                                <label for="type" class="form-label">Tipe</label>
+                                <select name="type" id="type" class="form-select">
+                                    <option value="sepatu">Sepatu</option>
+                                    <option value="tas">Tas</option>
+                                    <option value="sandal">Sandal</option>
+                                    <option value="topi">Topi</option>
+                                </select>
+                                @error('type')
+                                    <div class="invalid-feedback text-start">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="col-md-6">
+                                <label for="photo" class="form-label">Icon</label>
+                                <input type="file" class="form-control @error('photo') is-invalid @enderror" id="photo" name="photo" required accept="image/*"/>
+                                @error('photo')
+                                    <div class="invalid-feedback text-start">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
                         </div>
-                        <div class="mb-3">
-                            <label for="processing_time" class="form-label">Processing time</label>
-                            <input class="form-control @error('processing_time') is-invalid @enderror" type="number" id="processing_time" name="processing_time" placeholder="2" value="{{ old('processing_time') }}">
-                            @error('processing_time')
-                                <div class="invalid-feedback text-start">
-                                    {{ $message }}
-                                </div>
-                            @enderror
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-dark">Submit</button>
+                            <a href="/dashboard/master-data/treatment" class="btn btn-secondary ms-1">Back</a>
                         </div>
-                        <button type="submit" class="btn btn-dark">Submit</button>
-                        <a href="/dashboard/master-data/treatment" class="btn btn-secondary ms-1">Back</a>
                     </form>
                 </div>
             </div>

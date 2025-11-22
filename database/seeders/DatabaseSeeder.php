@@ -9,10 +9,10 @@ use App\Models\Campaign;
 use App\Models\Gallery;
 use App\Models\Transaction;
 use App\Models\Customer;
-use App\Models\DetailTransaction;
+use App\Models\TransactionDetail;
 use App\Models\Outlet;
 use App\Models\Treatment;
-use App\Models\DetailTreatment;
+use App\Models\TreatmentDetail;
 
 use Illuminate\Support\Carbon;
 
@@ -94,12 +94,13 @@ class DatabaseSeeder extends Seeder
             'name' => 'Fast Clean'
         ]);
 
-        DetailTreatment::create([
+        TreatmentDetail::create([
             'uuid' => fake()->unique()->uuid(),
             'treatment_id' => 1,
             'name' => 'Fast Clean',
             'cost' => 30000,
-            'processing_time' => 3
+            'processing_time' => 3,
+            'process' => 'Process 1,Process 2, Process 3'
         ]);
 
         Treatment::create([
@@ -107,36 +108,40 @@ class DatabaseSeeder extends Seeder
             'name' => 'Deep Cleaning'
         ]);
 
-        DetailTreatment::create([
+        TreatmentDetail::create([
             'uuid' => fake()->unique()->uuid(),
             'treatment_id' => 2,
             'name' => 'Reguler Mild',
             'cost' => 50000,
-            'processing_time' => 3
+            'processing_time' => 3,
+            'process' => 'Process 1,Process 2, Process 3'
         ]);
 
-        DetailTreatment::create([
+        TreatmentDetail::create([
             'uuid' => fake()->unique()->uuid(),
             'treatment_id' => 2,
             'name' => 'Reguler Hard',
             'cost' => 70000,
-            'processing_time' => 3
+            'processing_time' => 3,
+            'process' => 'Process 1,Process 2, Process 3'
         ]);
 
-        DetailTreatment::create([
+        TreatmentDetail::create([
             'uuid' => fake()->unique()->uuid(),
             'treatment_id' => 2,
             'name' => 'Premium Mild',
             'cost' => 80000,
-            'processing_time' => 3
+            'processing_time' => 3,
+            'process' => 'Process 1,Process 2, Process 3'
         ]);
 
-        DetailTreatment::create([
+        TreatmentDetail::create([
             'uuid' => fake()->unique()->uuid(),
             'treatment_id' => 2,
             'name' => 'Premium Hard',
             'cost' => 100000,
-            'processing_time' => 3
+            'processing_time' => 3,
+            'process' => 'Process 1,Process 2, Process 3'
         ]);
 
         Treatment::create([
@@ -148,7 +153,7 @@ class DatabaseSeeder extends Seeder
             'uuid' => fake()->unique()->uuid(),
             'customer_id' => 1,
             'outlet_id' => 2,
-            'transaction_type' => 'dropoff',
+            'transaction_type' => 'dropzone',
             'payment_method' => 'cash',
             'payment_time' => 'later',
             'transaction_start' => Carbon::now(),
@@ -156,36 +161,32 @@ class DatabaseSeeder extends Seeder
             'payment_status' => 'unpaid',
             'total_items' => 2,
             'cost' => 105000,
-            'total_amount' => 105000,
+            'total_cost' => 105000,
             'invoice_no' => '00001/ASC/2024',
             'transaction_status' => 'pending'
         ]);
         
-        DetailTransaction::create([
+        TransactionDetail::create([
             'uuid' => fake()->unique()->uuid(),
             'transaction_id' => 1,
             'treatment_id' => 1,
-            'detail_treatment_id' => 1,
-            'treatment_name' => 'Fast Clean',
+            'treatment_details_id' => 1,
             'merk' => 'Nike Air Jordan',
             'type' => 'sepatu',
             'size' => 'EU-43',
-            'treatment_id' => 1,
-            'amount' => 30000,
+            'cost' => 30000,
             'status' => 'pending',
             'description' => 'Lorem ipsum dolor sit amet 1'
         ]);
         
-        DetailTransaction::create([
+        TransactionDetail::create([
             'uuid' => fake()->unique()->uuid(),
             'transaction_id' => 1,
-            'treatment_id' => 1,
-            'detail_treatment_id' => 1,
-            'treatment_name' => 'Fast Clean',
+            'treatment_id' => 2,
+            'treatment_details_id' => 1,
             'merk' => 'Gucci',
             'type' => 'tas',
-            'treatment_id' => 2,
-            'amount' => 75000,
+            'cost' => 75000,
             'status' => 'pending',
             'description' => 'Lorem ipsum dolor sit amet 2'
         ]);
@@ -202,22 +203,20 @@ class DatabaseSeeder extends Seeder
             'payment_status' => 'unpaid',
             'total_items' => 1,
             'cost' => 50000,
-            'other_cost' => 20000,
-            'total_amount' => 70000,
+            'shipping_cost' => 20000,
+            'total_cost' => 70000,
             'invoice_no' => '00002/ASC/2024',
             'transaction_status' => 'pending'
         ]);
 
-        DetailTransaction::create([
+        TransactionDetail::create([
             'uuid' => fake()->unique()->uuid(),
             'transaction_id' => 2,
             'treatment_id' => 2,
-            'detail_treatment_id' => 1,
-            'treatment_name' => 'Fast Clean',
+            'treatment_details_id' => 1,
             'merk' => 'Converse',
             'type' => 'sepatu',
-            'treatment_id' => 1,
-            'amount' => 50000,
+            'cost' => 50000,
             'status' => 'pending',
             'description' => 'Lorem ipsum dolor sit amet 3'
         ]);

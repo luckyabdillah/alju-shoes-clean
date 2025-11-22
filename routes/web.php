@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\GalleryController;
@@ -10,7 +11,13 @@ use App\Http\Controllers\TransactionPDController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\TreatmentController;
+use App\Http\Controllers\PromoCodeController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\InvoiceController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,88 +30,95 @@ use App\Http\Controllers\InvoiceController;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
+Route::get('/', [HomeController::class, 'index']);
+Route::get('/treatment/{treatment}', [HomeController::class, 'getTreatment']);
+Route::get('/treatment/{treatment}/get-details', [HomeController::class, 'getTreatmentDetails']);
+Route::get('/check-promo-code/{code}', [HomeController::class, 'checkPromoCode']);
+
+Route::get('/order', [TransactionDropzoneController::class, 'createStepOne']);
+Route::post('/order', [TransactionDropzoneController::class, 'storeStepOne']);
+
+Route::get('/order/details', [TransactionDropzoneController::class, 'createStepTwo']);
+Route::post('/order/details', [TransactionDropzoneController::class, 'storeStepTwo']);
+
+Route::get('/order/summary', [TransactionDropzoneController::class, 'createStepThree']);
+Route::post('/order/summary', [TransactionDropzoneController::class, 'storeStepThree']);
+
+Route::get('/pickup-delivery', [TransactionPDController::class, 'createStepOne']);
+Route::post('/pickup-delivery', [TransactionPDController::class, 'storeStepOne']);
+
+Route::get('/pickup-delivery/details', [TransactionPDController::class, 'createStepTwo']);
+Route::post('/pickup-delivery/details', [TransactionPDController::class, 'storeStepTwo']);
+
+Route::get('/pickup-delivery/summary', [TransactionPDController::class, 'createStepThree']);
+Route::post('/pickup-delivery/summary', [TransactionPDController::class, 'storeStepThree']);
+
+Route::get('/transaction/{transaction}', [TransactionDropzoneController::class, 'show']);
+
+Route::get('/invoice/{transaction}', [InvoiceController::class, 'index']);
+Route::get('/invoice/{transaction}/export', [InvoiceController::class, 'export']);
+Route::put('/invoice/{transaction}', [InvoiceController::class, 'update']);
+
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('dashboard')->group(function () {
+        Route::get('/', [DashboardController::class, 'index']);
+
+        Route::middleware(['role:operation|administrator'])->group(function () {
+            Route::get('/transaction/dropzone', [TransactionController::class, 'indexDropzone']);
+            Route::put('/transaction/dropzone/{transaction}/payment-update', [TransactionController::class, 'paymentUpdate']);
+            Route::put('/transaction/dropzone/{transaction}/status-update', [TransactionController::class, 'statusUpdate']);
+            Route::delete('/transaction/dropzone/{transaction}', [TransactionController::class, 'destroy']);
+        });
+
+        Route::middleware(['role:driver|administrator'])->group(function () {
+            Route::get('/transaction/pickup-delivery', [TransactionController::class, 'indexPickupDelivery']);
+            Route::put('/transaction/pickup-delivery/{transaction}/payment-update', [TransactionController::class, 'paymentUpdate']);
+            Route::put('/transaction/pickup-delivery/{transaction}/status-update', [TransactionController::class, 'statusUpdate']);
+            Route::delete('/transaction/pickup-delivery/{transaction}', [TransactionController::class, 'destroy']);
+        });
+    
+        Route::middleware(['role:administrator'])->group(function () {
+            Route::prefix('master-data')->group(function () {
+                Route::resource('/campaign', CampaignController::class);
+                Route::put('/campaign/{campaign}/status-update', [CampaignController::class, 'statusUpdate']);
+                
+                Route::resource('/gallery', GalleryController::class);
+                Route::put('/gallery/{gallery}/status-update', [GalleryController::class, 'statusUpdate']);
+                
+                Route::resource('/outlet', OutletController::class);
+                Route::put('/outlet/{outlet}/status-update', [OutletController::class, 'statusUpdate']);
+                
+                Route::get('/customer', [CustomerController::class, 'index']);
+                
+                Route::resource('/treatment', TreatmentController::class);
+                Route::post('/treatment/{treatment}', [TreatmentController::class, 'storeDetail']);
+                Route::put('/treatment/{treatment}/{detailTreatment}', [TreatmentController::class, 'updateDetail']);
+                Route::delete('/treatment/{treatment}/{detailTreatment}', [TreatmentController::class, 'destroyDetail']);
+                
+                Route::resource('/promo-code', PromoCodeController::class);
+            });
+            
+            Route::resource('/user', UserController::class);
+            Route::put('/user/{user}/reset-password', [UserController::class, 'resetPassword']);
+            
+            Route::get('/report', [ReportController::class, 'index']);
+            Route::get('/report/export-excel', [ReportController::class, 'exportExcel']);
+        
+            Route::get('/config', [ConfigController::class, 'index']);
+            Route::put('/config', [ConfigController::class, 'update']);
+        
+            Route::get('/transaction', [TransactionController::class, 'index']);
+            Route::get('/transaction/{transaction}/edit', [TransactionController::class, 'edit']);
+            Route::put('/transaction/{transaction}', [TransactionController::class, 'update']);
+        });
+
+        Route::get('/settings', [SettingsController::class, 'edit']);
+        Route::put('/settings', [SettingsController::class, 'update']);
+        Route::put('/change-password', [SettingsController::class, 'updatePassword']);
+    });
+    
+    Route::post('logout', [AuthController::class, 'logout']);
 });
 
-
-// == User ==
-// LANDING PAGE
-
-// ORDER PAGE
-// -> Ada button untuk cek nomor terdaftar jika customer pernah bertransaksi sebelumnya sehingga tidak perlu lagi mengisi nama, alamat, dll pada form (Hit API, cek ke route api.php)
-Route::get('/order', [TransactionController::class, 'createStepOne']);
-Route::post('/order', [TransactionController::class, 'storeStepOne']);
-
-Route::get('/order/details', [TransactionController::class, 'createStepTwo']);
-Route::post('/order/details', [TransactionController::class, 'storeStepTwo']);
-
-Route::get('/order/summary', [TransactionController::class, 'createStepThree']);
-Route::post('/order/summary', [TransactionController::class, 'storeStepThree']);
-
-Route::get('/pickup-delivery', [TransactionController::class, 'createPDStepOne']);
-
-// TRACKING PAGE
-// -> Cek transaksi berdasarkan nomor invoice, menampilkan transaksi dan detail transaksi. (Kemungkinan hit API juga, data tampil di halaman yang sama, atau dapat berupa sehingga user tidak ter-redirect ke halaman lain)
-
-// INVOICE PAGE
-Route::get('/invoice/{invoice}', [InvoiceController::class, 'index']);
-
-
-// == Dashboard Admin ==
-
-// *Note:
-// Untuk role admin, hanya bisa mengakses menu transaction pending
-// Untuk role kurir, hanya bisa mengakses menu transaction pending yang tipe transaksinya pickup & delivery
-
-Route::get('/login', function() {
-    return view('dashboard.login.index');
-});
-
-// Main Dashborad
-Route::get('/dashboard', [DashboardController::class, 'index']);
-
-// CMS CAMPAIGN (CRUD)
-Route::resource('/dashboard/master-data/campaign', CampaignController::class);
-Route::put('/dashboard/master-data/campaign/{campaign}/status-update', [CampaignController::class, 'statusUpdate']);
-
-// CMS GALLERY (CRUD)
-Route::resource('/dashboard/master-data/gallery', GalleryController::class);
-Route::put('/dashboard/master-data/gallery/{gallery}/status-update', [GalleryController::class, 'statusUpdate']);
-
-// CMS OUTLET (CRUD)
-Route::resource('/dashboard/master-data/outlet', OutletController::class);
-Route::put('/dashboard/master-data/outlet/{outlet}/status-update', [OutletController::class, 'statusUpdate']);
-
-// Customer
-Route::get('/dashboard/master-data/customer', [CustomerController::class, 'index']);
-
-// Treatment
-Route::resource('/dashboard/master-data/treatment', TreatmentController::class)->except(['edit', 'update']);
-Route::post('/dashboard/master-data/treatment/{treatment}', [TreatmentController::class, 'storeDetail']);
-Route::put('/dashboard/master-data/treatment/{treatment}/{detailTreatment}', [TreatmentController::class, 'updateDetail']);
-Route::delete('/dashboard/master-data/treatment/{treatment}/{detailTreatment}', [TreatmentController::class, 'destroyDetail']);
-
-// TRANSACTION PENDING
-// -> edit status pembayaran (paid:unpaid)
-// -> edit status transaksi (pending -> on_progress -> done)
-// -> tombol cetak label (no invoice)
-Route::get('/dashboard/transaction/dropzone', [TransactionDropzoneController::class, 'index']);
-Route::put('/dashboard/transaction/dropzone/{transaction}/payment-update', [TransactionDropzoneController::class, 'paymentUpdate']);
-Route::put('/dashboard/transaction/dropzone/{transaction}/status-update', [TransactionDropzoneController::class, 'statusUpdate']);
-
-// TRANSACTION PENDING -> type: Pickup & Delivery
-// -> redirect link ke google maps berdasarkan koordinat customer
-// -> redirect link ke whatsapp dengan kalimat template (pemberitahuan keberangkatan)
-// -> redirect link ke whatsapp dengan kalimat template (pemberitahuan sampai di lokasi)
-Route::get('/dashboard/transaction/pickup-delivery', [TransactionPDController::class, 'index']);
-Route::put('/dashboard/transaction/pickup-delivery/{transaction}/payment-update', [TransactionPDController::class, 'paymentUpdate']);
-Route::put('/dashboard/transaction/pickup-delivery/{transaction}/status-update', [TransactionPDController::class, 'statusUpdate']);
-
-// TRANSACTION REPORT (Export Excel)
-// -> per hari
-// -> per minggu
-// -> per bulan
-// -> per tahun
-// -> custom date
-
+Route::get('/login', [AuthController::class, 'index'])->name('login')->middleware('guest');
+Route::post('/login', [AuthController::class, 'authenticate'])->middleware('guest');

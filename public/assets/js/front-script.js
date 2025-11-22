@@ -1,12 +1,16 @@
-let cIndicators = document.querySelector('.carousel-indicators');
-let cIndicatorsChildren = Array.from(cIndicators.children);
-console.log(cIndicatorsChildren);
+const flashDataFailed = $('.flash-data-failed').data('flash');
 
-cIndicators.addEventListener('click', function(e) {
-    if (e.target.classList.contains('indicators')) {
-        cIndicatorsChildren.forEach(el => {
-            el.classList.remove('active');
-        });
-        e.target.classList.add('active');
-    }
-})
+if (flashDataFailed) {
+    Swal({
+        title: 'Failed',
+        text: flashDataFailed,
+        type: 'error'
+    })
+}
+
+$(function(){ 
+    var navMain = $(".navbar-collapse");
+    navMain.on("click", "a:not([data-toggle])", null, function () {
+        navMain.collapse('hide');
+    });
+});

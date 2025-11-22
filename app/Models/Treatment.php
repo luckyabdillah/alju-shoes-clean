@@ -13,7 +13,7 @@ class Treatment extends Model
         return 'uuid';
     }
 
-    public function detail_treatments() {
-        return $this->hasMany(DetailTreatment::class);
+    public function treatment_details() {
+        return $this->hasMany(TreatmentDetail::class);
     }
 }

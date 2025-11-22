@@ -17,10 +17,12 @@ return new class extends Migration
             $table->string('name', 100);
             $table->string('whatsapp_number')->unique();
             $table->text('address');
-            $table->string('benchmark')->nullable();
+            $table->string('benchmark', 50)->nullable();
             $table->string('lat', 100)->nullable();
             $table->string('long', 100)->nullable();
             $table->datetime('last_order')->nullable();
+            $table->integer('total_order')->default(0);
+            $table->integer('total_items')->default(0);
             $table->timestamps();
         });
     }

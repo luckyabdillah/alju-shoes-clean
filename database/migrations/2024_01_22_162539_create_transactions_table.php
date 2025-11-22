@@ -16,7 +16,7 @@ return new class extends Migration
             $table->uuid();
             $table->foreignId('customer_id');
             $table->foreignId('outlet_id');
-            $table->enum('transaction_type', ['dropoff', 'pickup-delivery'])->default('dropoff');
+            $table->enum('transaction_type', ['dropzone', 'pickup-delivery'])->default('dropzone');
             $table->enum('payment_method', ['cash', 'qris'])->default('cash');
             $table->enum('payment_time', ['now', 'later'])->default('now');
             $table->datetime('transaction_start');
@@ -30,7 +30,7 @@ return new class extends Migration
             $table->string('proof_of_handover')->nullable();
             $table->string('proof_of_payment')->nullable();
             $table->boolean('is_completed')->default(false);
-            $table->string('transaction_status')->default('pending');
+            $table->enum('status', ['pending', 'on_progress', 'done'])->default('pending');
             $table->timestamps();
         });
     }

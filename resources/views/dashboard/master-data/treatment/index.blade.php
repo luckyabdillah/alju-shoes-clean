@@ -5,8 +5,7 @@
         <div class="card">
             <h4 class="card-header">Treatment Grouping</h4>
             <div class="card-body">
-                {{-- <h6><a href="/dashboard/master-data/treatment/create" class="btn btn-dark">Add New Grouping</a></h6> --}}
-                <button class="btn btn-dark btn-add mb-3" data-bs-toggle="modal" data-bs-target="#treatmentGroupingModal">Add New Grouping</button>
+                <a href="/dashboard/master-data/treatment/create" class="btn btn-dark mb-3">Tambah Grouping</a>
                 @if (session()->has('success'))
                 <div class="flash-data" data-flash="{{ session('success') }}"></div>
                 @endif
@@ -14,9 +13,10 @@
                     <table class="table table-basic" id="">
                         <thead>
                             <tr class="text-center">
+                                <th>No</th>
+                                <th>Nama</th>
+                                <th>Icon</th>
                                 <th>#</th>
-                                <th class="text-start">Name</th>
-                                <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -24,23 +24,19 @@
                                 @foreach ($treatments as $treatment)
                                 <tr class="text-center">
                                     <td>{{ $loop->iteration }}</td>
-                                    <td class="text-start">{{ $treatment->name }}</td>
+                                    <td>{{ $treatment->name }}</td>
+                                    <td>
+                                        <img src="{{ asset("storage/$treatment->photo") }}" alt="Treatment Icon" width="50">    
+                                    </td>
                                     <td class="text-center">
                                         <a class="me-2 btn btn-secondary" href="/dashboard/master-data/treatment/{{ $treatment->uuid }}"><i class="bx bx-list-ul me-1"></i> List</a>
-                                        {{-- <a class="me-2 btn btn-warning" href="/dashboard/master-data/treatment/{{ $treatment->uuid }}/edit"><i class="bx bx-pencil me-1"></i> Edit</a> --}}
-                                        <button
-                                            class="btn btn-warning btn-edit me-2"
-                                            data='{
-                                                "uuid":"{{ $treatment->uuid }}",
-                                                "name":"{{ $treatment->name }}"
-                                            }'
-                                            >
+                                        <a href="/dashboard/master-data/treatment/{{ $treatment->uuid }}/edit" class="btn btn-warning me-2">
                                             <i class="bx bx-pencil me-1"></i> Edit
-                                        </button>
+                                        </a>
                                         <form action="/dashboard/master-data/treatment/{{ $treatment->uuid }}" method="post" class="d-inline">
                                             @csrf
                                             @method('delete')
-                                            <button type="submit" class="btn btn-danger btn-delete" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</button>
+                                            <button type="submit" class="btn btn-danger btn-delete" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Hapus</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -76,6 +72,20 @@
                                 </div>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label for="type" class="form-label">Type</label>
+                            <select name="type" id="type" class="form-select">
+                                <option value="sepatu">Sepatu</option>
+                                <option value="tas">Tas</option>
+                                <option value="sandal">Sandal</option>
+                                <option value="topi">Topi</option>
+                            </select>
+                            @error('type')
+                                <div class="invalid-feedback text-start">
+                                    {{ $message }}
+                                </div>
+                            @enderror
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">Cancel</button>
@@ -96,6 +106,7 @@
 
             const nameField = $('[name="name"]');
             nameField.val('');
+            $('[name="type"]').val('sepatu');
             setTimeout(function() { 
                 nameField.focus(); 
             }, 400);
@@ -110,6 +121,7 @@
             $('#modalForm').attr('action', '/dashboard/master-data/treatment/' + data.uuid)
             const nameField = $('[name="name"]');
             nameField.val(data.name);
+            $('[name="type"]').val(data.type);
 
             $('#treatmentGroupingModal').modal('show');
 
@@ -120,7 +132,7 @@
 
         $(document).on('click', '.btn-cancel', function(e) {
             e.preventDefault();
-            $('input[name="_method"]').remove();
+            $('input[name="_method"][value="put"]').remove();
         });
     </script>
 @endsection

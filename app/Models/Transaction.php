@@ -13,8 +13,8 @@ class Transaction extends Model
         return 'uuid';
     }
 
-    public function detail_transactions() {
-        return $this->hasMany(DetailTransaction::class);
+    public function transaction_details() {
+        return $this->hasMany(TransactionDetail::class);
     }
 
     public function customer() {

@@ -19,10 +19,8 @@ use App\Models\Customer;
 //     return $request->user();
 // });
 
-Route::get('/customer/{whatsapp_number}', function(string $number) {
-    // dd($number);
-    $customer = Customer::where('whatsapp_number', $number)->first();
-    // dd($customer->name);
+Route::get('/customer/{whatsapp_number}', function(string $whatsappNumber) {
+    $customer = Customer::where('whatsapp_number', $whatsappNumber)->first();
     if ($customer) {
         return response()->json([
             'status' => 'OK',
