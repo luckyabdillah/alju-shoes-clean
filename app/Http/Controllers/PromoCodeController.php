@@ -94,6 +94,8 @@ class PromoCodeController extends Controller
      */
     public function destroy(PromoCode $promoCode)
     {
-        //
+        PromoCode::destroy($promoCode->id);
+
+        return redirect('/dashboard/master-data/promo-code')->with('success', 'Kode promo berhasil dihapus');
     }
 }

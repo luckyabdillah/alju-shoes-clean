@@ -53,7 +53,7 @@
                                         >
                                         <i class="bx bx-pencil me-1"></i> Edit
                                     </button>
-                                        <form action="/dashboard/master-data/outlet/{{ $code->id }}" method="post" class="d-inline">
+                                        <form action="/dashboard/master-data/promo-code/{{ $code->id }}" method="post" class="d-inline">
                                             @csrf
                                             @method('delete')
                                             <button type="submit" class="btn btn-danger btn-delete" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Hapus</button>
