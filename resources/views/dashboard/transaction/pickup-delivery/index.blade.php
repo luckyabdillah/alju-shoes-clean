@@ -83,7 +83,7 @@
                                     </form>
                                     @can('administrator')
                                         <td>
-                                            <form action="/dashboard/pickup-delivery/dropzone/{{ $pickup_transaction->uuid }}" method="post" class="d-inline">
+                                            <form action="/dashboard/transaction/pickup-delivery/{{ $pickup_transaction->uuid }}" method="post" class="d-inline">
                                                 @csrf
                                                 @method('delete')
                                                 <button type="submit" class="btn btn-danger btn-delete">
@@ -343,7 +343,7 @@
         <script>
             window.onload = function() {
                 let uuid = $('#uuid').val();
-                $('#transasctionDoneForm').attr('action', `/dashboard/transaction/dropzone/${uuid}/status-update`);
+                $('#transasctionDoneForm').attr('action', `/dashboard/transaction/pickup-delivery/${uuid}/status-update`);
                 $('#transactionDoneModal').modal('show');
             }
         </script>
