@@ -64,7 +64,7 @@
             <span class="menu-header-text">Transaksi</span>
         </li>
 
-        @canany(['operation', 'administrator'])
+        @canany(['operation', 'manager', 'administrator'])
             <li class="menu-item {{ Request::is('dashboard/transaction/dropzone*') ? 'active' : '' }}">
                 <a href="/dashboard/transaction/dropzone" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-store"></i>
@@ -73,7 +73,7 @@
             </li>
         @endcanany
 
-        @canany(['driver', 'administrator'])
+        @canany(['driver', 'manager', 'administrator'])
             <li class="menu-item {{ Request::is('dashboard/transaction/pickup-delivery*') ? 'active' : '' }}">
                 <a href="/dashboard/transaction/pickup-delivery" class="menu-link">
                     <i class="menu-icon tf-icons bx bx-cycling"></i>

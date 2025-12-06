@@ -8,7 +8,7 @@
             </h6>
         </div>
         <div class="row g-3">
-            @canany(['operation', 'administrator'])
+            @canany(['operation', 'manager', 'administrator'])
                 <div class="col-lg col-12">
                     <div class="card">
                         <div class="card-body">
@@ -31,7 +31,7 @@
                     </div>
                 </div>
             @endcanany
-            @canany(['driver', 'administrator'])
+            @canany(['driver', 'manager', 'administrator'])
                 <div class="col-lg col-12">
                     <div class="card">
                         <div class="card-body">

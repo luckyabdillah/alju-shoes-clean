@@ -40,7 +40,7 @@ class UserController extends Controller
             'name' => 'required|max:100',
             'username' => 'required|max:100|unique:users,username',
             'password' => 'required|min:8|max:150|confirmed',
-            'role' => 'required|in:driver,operation,administrator',
+            'role' => 'required|in:driver,operation,manager,administrator',
             'outlet_id' => 'nullable|numeric',
         ]);
 
@@ -78,7 +78,7 @@ class UserController extends Controller
         $rules = [
             'name' => 'required|max:100',
             'username' => 'required|max:100',
-            'role' => 'required|in:driver,operation,administrator',
+            'role' => 'required|in:driver,operation,manager,administrator',
             'outlet_id' => 'nullable|numeric',
         ];
 

@@ -63,14 +63,14 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index']);
 
-        Route::middleware(['role:operation|administrator'])->group(function () {
+        Route::middleware(['role:operation|manager|administrator'])->group(function () {
             Route::get('/transaction/dropzone', [TransactionController::class, 'indexDropzone']);
             Route::put('/transaction/dropzone/{transaction}/payment-update', [TransactionController::class, 'paymentUpdate']);
             Route::put('/transaction/dropzone/{transaction}/status-update', [TransactionController::class, 'statusUpdate']);
             Route::delete('/transaction/dropzone/{transaction}', [TransactionController::class, 'destroy']);
         });
 
-        Route::middleware(['role:driver|administrator'])->group(function () {
+        Route::middleware(['role:driver|manager|administrator'])->group(function () {
             Route::get('/transaction/pickup-delivery', [TransactionController::class, 'indexPickupDelivery']);
             Route::put('/transaction/pickup-delivery/{transaction}/payment-update', [TransactionController::class, 'paymentUpdate']);
             Route::put('/transaction/pickup-delivery/{transaction}/status-update', [TransactionController::class, 'statusUpdate']);

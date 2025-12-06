@@ -8,7 +8,7 @@
             @if (session()->has('success'))
             <div class="flash-data" data-flash="{{ session('success') }}"></div>
             @endif
-            @can('administrator')
+            @canany(['manager', 'administrator'])
                 <div class="row mb-4">
                     <div class="col-md-5">
                         <label for="id" class="form-label">Filter</label>
@@ -25,7 +25,7 @@
                         </form>
                     </div>
                 </div>
-            @endcan
+            @endcanany
             <h5>Pending</h5>
             <div class="table-responsive text-nowrap">
                 <table class="table table-bordered data-table">

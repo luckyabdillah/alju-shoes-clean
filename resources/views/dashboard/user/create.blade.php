@@ -32,8 +32,14 @@
                             <select class="form-select @error('role') is-invalid @enderror" id="role" name="role" required>
                                 <option value="driver" {{ old('role') == 'driver' ? 'selected' : '' }}>Driver</option>
                                 <option value="operation" {{ old('role') == 'operation' ? 'selected' : '' }}>Operation</option>
+                                <option value="manager" {{ old('role') == 'manager' ? 'selected' : '' }}>Manager</option>
                                 <option value="administrator" {{ old('role') == 'administrator' ? 'selected' : '' }}>Administrator</option>
                             </select>
+                            @error('role')
+                                <div class="invalid-feedback text-start">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="col-md-6">
                             <label for="outlet_id" class="form-label">Outlet</label>
